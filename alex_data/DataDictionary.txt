@@ -1,0 +1,38 @@
+Data Dictionary
+
+
+File 1: ADNIdata_Baseline.mat
+- This data was used to produce Figures 1 and 2
+
+'ADNIdataBL' A structure containing the unprocessed data - you probably won't need this 
+but might be interesting to look at the unprocessed values for some of the variables
+
+'EBMdataBL' A matrix containing the processed biomarker values. Each row is a subject and
+each column is the value of a particular biomarker for that subject.
+
+'EBMdxBL' A vector containing the diagnosis of each subject. 1 = 'Cognitively Normal',
+2 = 'Mild Cognitive Impairment', 3 = 'Alzheimer's disease'.
+
+'EBMevents' Each cell is the name of the events in the columns of 'EBMdataBL'
+
+
+
+File 2: ADNIdata_BiomarkerFollowUp.mat
+- This data was used to produce Figure 3
+
+'ADNIdata_Xm' A structure containing the unprocessed data for each follow up time point X - 
+you probably won't need this but might be interesting to look at the unprocessed values 
+for some of the variables
+
+'EBM_data_Xm' A matrix containing the processed biomarker values for each follow up time 
+point X. Each row is a subject and each column is the value of a particular biomarker for 
+that subject.
+
+'event_labels_Xm' Each cell is the name of the events in the columns of 'EBM_data_Xm'
+
+
+File 3: ADNIdata_ClinicalFollowUp.mat
+- This data was used to produce Figure 4
+
+'SUBJinfoBL' and 'SUBJinfo' Clinical follow up information at baseline and all time points
+respectively
