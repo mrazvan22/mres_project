@@ -1,6 +1,16 @@
 function [] = sporadic_ebm()
-
 load('alex_data/ADNIdata_Baseline.mat')
+
+%[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters()
+load('gaussian_params.mat')
+
+calc_likelihood(EBMdataBL, 1:14, mu_mix, sigma_mix)
+
+end
+
+function [mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters()
+
+
 
 % ADNIdataBL raw data as received from the ADNI website
 %EBMdataBL - pre-processed data for use in the EBM model
@@ -15,6 +25,10 @@ patient_indices = find(EBMdxBL > 1);
 % pXgEnE(i,j,1) = p(x_ij | Ei) (patients)
 % pXgEnE(i,j,2) = p(x_ij | not Ei) (controls)
 pXgEnE = zeros(nr_patients, nr_biomarkers,2);
+
+mu_mix = zeros(nr_biomarkers, 2);
+sigma_mix = zeros(nr_biomarkers, 2);
+pi_mix = zeros(nr_biomarkers, 2);
 
 for biomk=1:nr_biomarkers
    control_levels = EBMdataBL(control_indices, biomk);
@@ -33,17 +47,16 @@ for biomk=1:nr_biomarkers
    all_levels = EBMdataBL(:, biomk);
    % fit two gaussians on all the data
 
-   [mu_mix, sigma_mix, pi_mix]  = ...
+   [mu_mix(biomk,:), sigma_mix(biomk,:), pi_mix(biomk,:)]  = ...
        em_mix(all_levels, [mu_control, mu_patient], [sigma_control, sigma_patient])
    
 
    minX = min(all_levels);
    maxX = max(all_levels);
    X = minX:(maxX - minX)/200:maxX;
-   %Y = eval_mix_gaussians(X, mu_mix, sigma_mix, pi_mix);
-   Y = eval_mix_gaussians(X, [mu_control, mu_patient], [sigma_control, sigma_patient], pi_mix);
+   Y = eval_mix_gaussians(X, mu_mix(biomk,:), sigma_mix(biomk,:), pi_mix(biomk,:));
+   %Y = eval_mix_gaussians(X, [mu_control, mu_patient], [sigma_control, sigma_patient], pi_mix(biomk,:));
    
-
    
    clf;
    [f1,x1] = hist(patient_levels);
@@ -64,6 +77,9 @@ for biomk=1:nr_biomarkers
    %hist(control_levels,50)
    
 end
+
+   save('gaussian_params.mat', 'mu_mix', 'sigma_mix', 'pi_mix'); 
+   
 
 end
 
@@ -171,28 +187,69 @@ end
 
 end
 
-function l = calc_likelihood(X, S, mu_mix, sigma_mix)
+function logL = calc_likelihood(X, S, mu_mix, sigma_mix)
 
 % modelled from equation (1), alex paper page 2567
 % J - # patients
 % I - # Events or disease stages
 [J,I] = size(X) 
 
-[J2,~] = size(mu_mix);
-[J3,~] = size(sigma_mix);
 
-assert(J == J2 && J == J3);
+[I2,~] = size(mu_mix);
+[I3,~] = size(sigma_mix);
 
-l = 1;
+assert(I == I2 && I == I3);
 
+logL = 1;
+
+%reorder the gaussian parameters according to the S ordering provided
+mu_mix = mu_mix(S,:);
+sigma_mix = sigma_mix(S,:);
+
+% pXgE(i,j,1) = p (x_{ij} | E_i)      patients
+% pXgE(i,j,2) = p (x_{ij} | not E_i)  controls
+pXgE = zeros(I, J, 2);
+
+% for each biomarker 
+% mu_mix(:,1) - controls
+% mu_mix(:,2) - patients
+for i=1:I
+    pXgE(i,:,1) = normpdf(X(:,i), mu_mix(i,2), sigma_mix(i,2)); 
+    pXgE(i,:,2) = normpdf(X(:,i), mu_mix(i,1), sigma_mix(i,1));
+end
+
+pK = 1/J; % uniform prior that patient i is at stage k.
+
+% for each patient
 for j=1:J
-   sum = 0
-   for k=1:I
+   sum = 0;
+   % for each disease stage
+   for k=0:I
         
+        sum = sum + prod(pXgE(1:k,j,1)) * prod(pXgE(k+1:I,j,2));
    end
+  
+   logL = logL  + log(sum * pK)
+   
 end
 
+
+
 end
+
+function best_seq = char_seq_grad_asc(X, mu_mix, sigma_mix)
+
+best_seq = 1:14;
+
+nr_iterations = 2000;
+
+for i=1:nr_iterations
+    %best_seq = 
+end
+
+
+end
+
 
 function Y = eval_mix_gaussians(X, mu, sigma, pi)
 % X is a vector of data points
