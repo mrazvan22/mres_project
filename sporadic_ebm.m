@@ -1,21 +1,22 @@
 function [] = sporadic_ebm()
-load('alex_data/ADNIdata_Baseline.mat')
-
-%[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters()
-load('gaussian_params.mat')
-
-calc_likelihood(EBMdataBL, 1:14, mu_mix, sigma_mix)
-
-end
-
-function [mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters()
-
-
 
 % ADNIdataBL raw data as received from the ADNI website
 %EBMdataBL - pre-processed data for use in the EBM model
 % EMBLdxBL - the level of impairment for each patient (1 - Cognitively normal, 2 - MCI 3 - AD)
 % EBMevents - labels of the EBM events
+load('alex_data/ADNIdata_Baseline.mat')
+
+[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL)
+load('gaussian_params.mat')
+
+char_seq_grad_asc(EBMdataBL, mu_mix, sigma_mix)
+
+%calc_likelihood(EBMdataBL, 1:14, mu_mix, sigma_mix)
+
+end
+
+function [mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL)
+
 
 [nr_patients, nr_biomarkers] = size(EBMdataBL);
 
@@ -76,6 +77,10 @@ for biomk=1:nr_biomarkers
 
    %hist(control_levels,50)
    
+   if(biomk == 14)
+        display('asfda')
+   end
+   
 end
 
    save('gaussian_params.mat', 'mu_mix', 'sigma_mix', 'pi_mix'); 
@@ -108,7 +113,7 @@ eval_matrix = zeros(N,K);
 log_likely = inf;
 thresh = 0.0001;
 
-iterations = 1000;
+iterations = 300;
 
 Nk = [-1 -1];
 %% keep updating until convergence
@@ -206,6 +211,7 @@ logL = 1;
 mu_mix = mu_mix(S,:);
 sigma_mix = sigma_mix(S,:);
 
+% x_{ij} biomarker i in subject j
 % pXgE(i,j,1) = p (x_{ij} | E_i)      patients
 % pXgE(i,j,2) = p (x_{ij} | not E_i)  controls
 pXgE = zeros(I, J, 2);
@@ -214,7 +220,7 @@ pXgE = zeros(I, J, 2);
 % mu_mix(:,1) - controls
 % mu_mix(:,2) - patients
 for i=1:I
-    pXgE(i,:,1) = normpdf(X(:,i), mu_mix(i,2), sigma_mix(i,2)); 
+    pXgE(i,:,1) = normpdf(X(:,i), mu_mix(i,2), sigma_mix(i,2));
     pXgE(i,:,2) = normpdf(X(:,i), mu_mix(i,1), sigma_mix(i,1));
 end
 
@@ -228,7 +234,10 @@ for j=1:J
         
         sum = sum + prod(pXgE(1:k,j,1)) * prod(pXgE(k+1:I,j,2));
    end
-  
+   if(sum * pK == 0)
+      display('Warning log-likelihood is -inf') 
+   end
+   
    logL = logL  + log(sum * pK)
    
 end
@@ -237,14 +246,38 @@ end
 
 end
 
-function best_seq = char_seq_grad_asc(X, mu_mix, sigma_mix)
+function curr_seq = char_seq_grad_asc(X, mu_mix, sigma_mix)
 
-best_seq = 1:14;
+[nr_subjects,nr_biomk] = size(X);
 
+
+[nr_biomk2,~] = size(mu_mix);
+[nr_biomk3,~] = size(sigma_mix);
+
+assert(nr_biomk == nr_biomk2 && nr_biomk == nr_biomk3);
+
+curr_seq = 1:14;
 nr_iterations = 2000;
+old_likelihood = calc_likelihood(X, curr_seq, mu_mix, sigma_mix);
 
 for i=1:nr_iterations
-    %best_seq = 
+    p1 = ceil(rand * 14);
+    p2 = ceil(rand * 14);
+    while (p1 == p2)
+        p2 = ceil(rand * 14);
+    end
+    new_seq = curr_seq;
+    tmp = new_seq(p1);
+    new_seq(p1) = new_seq(p2);
+    new_seq(p2) = tmp;
+    new_likelihood = calc_likelihood(X, new_seq, mu_mix, sigma_mix);
+    if(new_likelihood >= old_likelihood)
+        curr_seq = new_seq;
+        old_likelihood = new_likelihood;
+    end
+    
+    curr_seq
+    
 end
 
 
