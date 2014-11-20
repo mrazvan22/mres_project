@@ -6,14 +6,14 @@ function [] = sporadic_ebm()
 % EBMevents - labels of the EBM events
 load('alex_data/ADNIdata_Baseline.mat')
 
-%[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL)
+[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL)
 load('sporadic_params.mat')
 
-%grad_asc_S = char_seq_grad_asc(EBMdataBL, mu_mix, sigma_mix)
-%save('sporadic_params.mat', 'grad_asc_S','-append')
-MCMC_samples = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, grad_asc_S);
+grad_asc_S = char_seq_grad_asc(EBMdataBL, mu_mix, sigma_mix)
+save('sporadic_params.mat', 'grad_asc_S','-append')
+%MCMC_samples = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, grad_asc_S);
 
-calc_variance_diagrams(samples);
+%calc_variance_diagrams(samples);
 
 %calc_likelihood(EBMdataBL, 1:14, mu_mix, sigma_mix)
 
@@ -100,7 +100,7 @@ function [mu, sigma, pi]  = ...
 
 mu = mu_init;
 sigma = max_sigma;
-min_sigma = max_sigma;
+min_sigma = max_sigma / 5;
 
 % pi_control is the weight of the control gaussian
 % pi(1) - control pi(2) - patient
