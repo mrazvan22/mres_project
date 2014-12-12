@@ -1,0 +1,554 @@
+\documentclass[a4paper,12pt]{article}
+
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\setlength{\marginparwidth}{.7in}
+
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-2in}
+\setlength{\topmargin}{0in}
+
+\let\olddospecials=\dospecials
+\def\dospecials{\samepage \olddospecials}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{2ex}
+
+\newcounter{note}
+\newcommand{\note}[1]{\textbf{NOTE \thenote\addtocounter{note}1: #1}}
+
+\newcommand{\years}{\textrm{y}}
+\newcommand{\months}{\textrm{m}}
+
+\newcommand{\rmd}{\textrm{d}}
+
+\newcommand{\event}{E}
+%\newcommand{\set}[1]{\textsf{#1}}
+\newcommand{\set}[1]{#1}
+\newcommand{\group}{\set{G}}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\uniform}{\mathcal{U}}
+
+\iffalse
+   $Id: EPSRC.tex 23 2010-07-02 16:10:33Z ucacdxa $
+\fi
+
+
+\begin{document}
+
+\title{Event-based models of disease progression}
+
+\author{}
+
+\date{}
+
+\maketitle
+
+\begin{verbatim}
+$Revision: 39 $ $Date: 2010-07-02 17:10:33 +0100 (Fri, 02 Jul 2010) $
+\end{verbatim}
+
+\section{Track Record}
+
+- CMIC and CS
+
+- DCA
+
+- HMF
+
+- DRC
+
+How the idea came about: collaboration on diffusion imaging, new
+perspective on the progression mapping idea from researchers with
+different expertise.
+
+- Other collaborators (HD people?, developmental - ICH?, ADNI)
+
+
+\section{Case for support}
+
+This project introduces a paradigm for analysing the progression of
+disease from cross-sectional data.  The program of work builds on the
+recent innovation~\cite{FonteijnScience10} of event-based modelling of
+disease progression.  The innovation enables a uniquely detailed
+discription of how the symptoms of a disease develop over time.  In
+particular, it determines a characteristic ordering of the distinct
+symptomatic events and does not rely on clinical staging of individual
+patients.  The framework provides new temporal signatures of diseases
+allowing new understanding and improving diagnostic and prognostic
+accuracy.  Here we consolidate the new paradigm, by characterizing its
+accuracy and limitations, to enable widespread uptake.  We then extend
+the framework to provide new tools for automatic disease staging,
+subtyping patient cohorts based on differences in disease progression
+and studying causal relationships between events that occur in the
+disease progression.
+
+We use two key demonstrator applications in neuroimaging: Alzheimer's
+disease (AD) and Huntingdon's disease (HD).  We have access to
+a unique variety of rich image data bases from large cohorts of both
+types of patient.  Through close collaboration with clinical experts
+in both application areas, the project will also lead directly to new
+understanding of the progression of these important diseases.  In
+particular, the new framework provides a mechanism to test
+long-standing hypotheses about the progression of AD in the brain that
+remain untested through current lack of available technology.
+
+The specific aims for the project are as follows:
+
+\begin{itemize}
+
+  \item To establish event-based modelling as a standard tool for disease
+progression analysis.
+
+  \item To construct multi-modal 4D disease signatures for AD and HD.
+
+  \item To determine automatically optimal staging systems for both diseases.
+
+  \item To identify subgroups in AD and HD.
+
+  \item To test the amyloid hypothesis in AD.
+
+  \item To test the hypothesis of connectivity of loss in AD.
+
+\end{itemize}
+
+\subsection*{Background}
+\subsubsection*{Alzheimer's Disease}
+Alzheimer's disease is the most common form of
+dementia.  The US alone has 5 million sufferers.  Their direct medical
+costs exceed $\$250$ billion and are rising rapidly with the ageing
+population.  No disease-modifying drugs are currently on the market.
+Development of treatment relies on early and accurate diagnosis of the
+disease to identify appropriate cohorts for clinical trials.  However,
+the current gold-standard diagnosis remains post-mortem histology and
+clinical diagnostic accuracy is only around $80\%$, because the
+symptoms are easily confused with other dementias and psychiatric
+disorders.  Moreover, the disease has several subtypes with different
+symptoms that may require different treatments or care plans.
+
+\subsubsection*{Huntington's Disease}
+
+\subsubsection*{Importance of progression mapping}
+Assessing in what stage of a disease a patient is, is important because clinicians can use this information to
+predict the future course of the disease and devise a patient-specific treatment plan.
+A detailed model of disease progression also helps in subdividing patients effectively for clinical trials. 
+Moreover, the classification of patients within such a model could be used as an outcome measure for clinical trials. 
+In the case in which a disease can be subdivided into several distinct stages, they can be used in clinical trial to establish 
+whether on average a drug slows down or stops the disease progressing to the next 
+stage and whether the drugs is more effective in the early stages of the disease or on the later.
+
+% For example, hallmarks of Alzheimer's disease include
+%widespread grey-matter atrophy, often most prominent in the
+%hippocampus and entorhinal cortex, deposition of amyloid plaques and
+%ventricular enlargement.  Moreover, longitudinal studies demonstrate that the
+%atrophy occurs in different characteristic orders in different
+%diseases.  Current automatic classification techniques tend to rely on
+%snapshots or 3D projections of the 4D progression.  The full temporal
+%signature will enable better classification.  \note{Need some stronger
+%arguments here.}
+
+\subsubsection*{Current approaches to progression mapping in AD}
+Disease progression in AD is currently characterized either by clinical symptoms or by post-mortem histology.
+The histological hallmark of AD is the appearance of amyloid placques and intracellular neurofibrillary tangles. 
+Braak and Braak show that especially the spread of NFT's follows a very specific and reproducible pattern through 
+the brain. Roughly speaking, NFT's start to appear in one layer of the transentorhinal cortex, whereupon they 
+spread to other memory-related areas in the brain, such as the entorhinal cortex and the hippocampus. Only in 
+the last stage of the disease, the rest of the brain is affected. These three stages in the spread of NFT's 
+roughly correspond to a pre-symptomatic stage, in which the patient does not experience any behavioral symptoms, 
+a incipient AD stage, in which the patient mainly suffers from episodic memory loss and a full AD stage, in which 
+the patient suffers from a more general deterioration of behavioral performance.  
+
+Braak and Braak provide a very detailed model of disease progression, but it is based on post-mortem data and therefore
+cannot be used to classify patients in clinical settings. Clinicians therefore still rely on behavioral tests, such as the
+Mini Mental State Exam (MMSE) to diagnose and classify patients. Such behavioral tests however lead only to a relatively
+crude staging of AD patients into maximally three groups.
+
+%- Standard approach
+
+%The standard approach to mapping the progression of a disease is to
+%divide a cohort of patients into a small number of stages using a
+%clinical measure and to evaluate the distribution of symptom scores of
+%patients within each stage.  In Alzheimer's disease, for example, we
+%might divide patients into mild, moderate and severe groups based on a
+%memory test (MMSE).  We can then measure the degree of grey-matter
+%atrophy in each of a set of regions of interest in each patient.
+%Comparison of the atrophy statistics in each region between groups
+%shows broadly which regions atrophy early and which later.  Thompson
+%and Toga the first?  Scahill et al~\cite{ScahillPNAS02} first use of
+%longitudinal data.  Thompson neuroimage review in various diseases.
+%Rosas in HD.
+
+\subsubsection*{MRI measures of atrophy}
+The appearnace of Amyloid placques and NFT's is followed by a local deterioration of neuronal tissue leading to significant
+gray matter atrophy. In the last 15 years, structural Magnetic Resonance Imaging has emerged as a method to effectively measure 
+cortical atrophy in vivo. Many papers have shown that the development of cortical atrophy roughly follows the same pattern as
+the spread of NFT's as shown by Braak and Braak. Scahill et al. for instance show that in presymptomatic AD patients, atrophy is limited
+to memory-related areas, after which atrophy spreads through other areas in later stages of the disease.
+
+MRI measures of atrophy could therefore lead to much more accurate models of disease progression, because cortical atrophy develops in a
+similar fashion as histological changes and they can be readily measured in vivo using structural MRI. So far, MRI studies have relied on a 
+classification of patients \emph{a priori} using behavioral criteria. These studies were necessary to gain confidence in structural MRI as a reliable 
+measure for cortical atrophy, but they have not exploited the potential of structural MRI to lead to a much more detailed description of 
+disease progression.
+
+\subsubsection*{General aim of proposal}
+The aim of this proposal is therefore to develop a model of disease progression that 
+does not require \emph{a priori} staging of patients. The application of this model to 
+MRI data from AD patients will lead to a description of disease progression, which is at least 
+as detailed as the Braak and Braak model, but which can be directly used to classify patients with.
+
+% A key limitation of the standard approach is the reliance on the
+%clinical measure to stage patients.  Clinical measures are imprecise
+%and can only provide very crude groupings into two or three broad
+%groups.  Thus the temporal resolution of the progression signature is
+%low.
+
+\subsection*{Ordered event models}  
+\subsubsection*{How they work}
+Our new event-based approach takes a set of events that occur within
+the progression of a disease and estimates the most likely ordering of
+those events.  The method has two key steps: construction of a
+precedence matrix, which contains for each pair of events the
+probability that one event precedes the other, and a fitting
+algorithm, which finds the most likely ordering from the precedence
+matrix.  The precedence matrix is straightforward to estimate from
+longitudinal data with sufficient temporal sampling rate to determine
+the order of events in each individual.  However, typically we do not
+have such rich data sets.  It is more common to have measurements from
+patients at a small number of points within the disease progression.
+However, given enough patients, we can still estimate the likelihood
+that one event happens before another with the assumption that the
+characteristic ordering of events is consistent across the patient
+cohort.  From each data point, we can estimate the likelihood that
+each individual event has occurred for that patient at the time of
+acquisition.  Thus, for any pair of events, we can determine the
+likelihood of observing a data set in which one event has happened but
+not the other.  By combining these likelihoods over the whole data
+set, we can estimate of the probability that any event precedes any
+other.  Given an estimate of the precedence matrix, the fitting
+algorithm seeks the event ordering that maximizes the likelihood of
+the data.  We use a Bayesian estimation approach: a simple MCMC
+procedure samples the posterior distribution on the ordering given the
+data using a non-informative prior that assigns all possible orderings
+equal likelihood.  The algorithm outputs not just the most likely
+ordering but probabilities of the relative ordering of each pair of
+events.
+
+\subsubsection*{Progress so far}
+
+Our preliminary work~\cite{FonteijnScience10} uses the ordered-events model to
+recover the characteristic order of grey-matter atrophy in AD
+and HD.  Strictly, the events are the onset of atrophy in each grey-matter
+region.  The data are MRI scans of patients at various stages during
+the disease.  From each patient 2 or more MRI scans are acquired. All scans are separated by
+at least 6 months to enable a direct atrophy measurement. The first scan
+acts as a baseline scan. Each subsequent scan is non-rigidly coregistered with the
+baseline scan. The amount of displacement that is needed locally to deform the subsequent 
+scan to the baseline scan is taken as a measure of atrophy. This voxel-wise atrophy-measure is then 
+averaged to form regional atrophy measures, by using a standard parcellation scheme, 
+implemented in the Freesurfer software \cite{}.
+
+We determine a likelihood that atrophy has started in each region in each patient by comparing a
+patient's regional atrophy with the distribution of regional atrophy values over the same time interval in age-matched
+controls.  These likelihoods combine over all patients to provide an
+estimate of the precedence matrix.
+
+The preliminary work tests the event-based approach on two small data
+sets.  The first is the familial AD data set that Ridha et
+al~\cite{Ridha} use to study differences in the atrophy
+pattern between presymptomatic, mild and moderate patients.  The data
+set contains only 9 patients (total of Y scans) and Z controls.
+Despite the sparse sampling, the event-ordering algorithm confirms the
+pattern of disease progression that is suggested by Braak and Braak and
+the MRI atrophy literature. It also suggests an ordering of events within
+patients in the later stages of the disease, which is novel compared to the relatively
+crude description of Braak and Braak. 
+
+The second data set is the London HD data set~\cite{HenleyJNeurol09}.  
+More info on the outcomes of this experiment...
+
+Both data sets contain multiple time points from each patient. However,
+we do not use information about the temporal ordering of each (non-baseline) scan in
+our model. Instead, we classify each scan along the timeline of disease progression that
+the model provides. If this classification is valid, a scan that is acquired later than
+a reference scan should always be classified as being 'later' on the timeline of 
+disease progression. We show that this indeed is the case.
+The output of the algorithm also proves very robust to varies implementation choices,
+such as the registration algorithm and the precise estimate of the
+precedence probabilities.  The experiments all strongly support the
+reliability and accuracy of the orderings we find.
+
+%We therefore have information of hoAlthough the
+%precise number of time points varies among patients, the algorithm
+%does not use that information.  Thus we validate the output by
+%determining the most likely position of each data set within the
+%ordering and comparing with the true ordering of time points for each
+%patient.  Results show excellent agreement.  
+
+Other groups have considered similar event-based models previously in
+other applications.  Puolamaki et al~\cite{PuolamakiPLoSCompBiol05}
+fit an event ordering to paleontological data to determine lifespans
+of taxa at different sites.  Their work is based on that of
+Mannila~\cite{MannilaSIGKDD00}, who fit partial orders to chains of
+events such as traffic through websites or student module-selection
+during a degree program.  The earlier work fits the ordering using a
+greedy algorithm, but later work uses MCMC in a similar way to our
+work.
+
+
+\subsubsection*{Proposed algorithmic extensions}
+\subsubsection*{Multi-modality}
+A key feature of the event-based approach is that it extends naturally
+to include information from a wide variety of sources, such as
+multiple imaging modalities, results of other diagnostic tests and
+clinical measurements.  In AD, for example, we can extend our previous
+list of events from onsets of atrophy measured by MRI to include
+detection of amyloid deposition from PIB-PET imaging, detection of
+amyloid in CSF from lumbar puncture and clinical onset of AD from
+tests such as MMSE. The disease signature ordering of all these events
+will provide unprecented new insight into the progression of the
+disease.
+
+\subsubsection*{Disease staging}
+
+A useful variant of the ordered-events model, the ordered-groups
+model, provides an optimal stratification of disease stages.  The
+model assigns each event to one of a set of groups.  Each group
+represents the disease stage during which all the events in that group
+occur.  The groups have a strict ordering, but the order of all events
+within each group is undetermined.
+
+Our MCMC algorithm for sampling orderings adapts easily to the groups
+model.  \note{Bit more detail on the adaptation required.} Moreover,
+the Bayesian formulation lends itself naturally to two distinct uses
+of the model.  First, if we assume a number of disease stages, the
+algorithm will provide the optimal assignment of events to groups, as
+well as confidences in the assignments.  Second, the algorithm can
+provide a disease staging system automatically by identifying the most
+likely number of groups.  The second application uses Bayesian model
+selection: we marginalize the assignment of events to groups and
+evaluate and compare the likelihoods of the models with increasing
+numbers of groups.
+
+A further refinement uses hierarchical grouping whereby some events
+have exclusive membership of one group, but others belong to several
+consecutive groups.  This enables the model to capture varying
+certainty in the position of events within the progression.  Eg, MMSE
+score falls below X could have high variability between subjects.
+Would allow users to throw in even very speculative events.
+
+\subsubsection*{Subtyping}
+
+The events model (or groups model) extends naturally to finding
+subtypes within data sets.  We simply replace the single ordering by a
+mixture of orderings.  Fitting mixtures of orderings may require more
+sophisticated optimization algorithms, such as
+Expectation-Maximization or Variational Bayes to assign data points to
+subgroups while estimating the individual orderings themselves.
+Mannila et al~\cite{ManillaSIGKDD00} combine their greedy algorithm
+with EM to fit mixtures of partial orders.
+
+As in the groups model, the Bayesian formulation supports two distinct
+usages of mixture models for subtyping: identification of a prespecified
+number of subtypes and exploratory analyses to determine the most
+likely number of subtypes.  In the first application, we search for
+the event-orderings in each subtype as well as the classification of
+each data point to a subtype.  In the second, we can marginalize the
+orderings and subgroup assignments to determine likelihoods of each
+candidate number of subgroups.  Once again, the Bayesian formulation
+facilitates the model selection, which enables the latter application.
+
+An extension of the subtyping techniques allows the distinct orderings
+of each subtype to overlap.  For example, the event ordering for
+subtypes may differ only in a small subset of the events.  Model
+selection techniques will help indentify the most parsimonious
+discription of the data through mixtures of partially overlapping
+event orderings.
+
+\note{Note that the original algorithm has robustness to mixtures of
+progressions and does not completely fail when they exist.}
+
+\subsubsection*{Causality}
+The event-based approach lends itself naturally to studies of causal
+relationships.  At the simplest level, we can identify candidate
+causal relationships through correlations of event timings.
+Covariance of the timings of two events suggests a causal relationship
+between the two events.  Causality may not be direct, as covariance
+may arise if both events are consequences of some third event even if
+they do not interact with one another directly.  However, even these
+simple causal relationships are much more difficult to study using
+standard analyses of disease progression that rely on clinical
+staging.  Two types of analysis are possible: hypothesis testing,
+where we compare models with and without causal relationships between
+certain events, and hypothesis generation, where we use model
+selection to find the set of causal relationships that explain the
+data best.  \note{Possible to test for a hypothesized causal
+relationship using standard techniques?  Probably not possible to
+explore the data for candidate causal relationships.}
+
+\subsection*{Data sets}
+
+We have unique access to several rich data sets for developing,
+validating and exploiting the new techniques.
+
+  - ADNI, DIAN, Fidelity, Resting-state and other modalities.
+
+  - Track HD
+
+- Other applications
+
+  - Other dementias
+
+  - Developmental studies
+
+\subsection*{Programme and Methodology}
+
+Work Package 1.  Simple event orderings.
+
+This work package refines the preliminary event-ordering algorithm
+in~\cite{FonteijnScience10} into a freely available and readily usable
+package and uses it with several new data sets.  We extend previous
+experiments to larger data sets with events from different sources.
+
+The first step is to build a simulation framework for evaluation.  The
+simulation will use standard models for atrophy (linear or quadratic
+reduction in regional volume).  The AD and HD literature provides a
+model range of atrophy rates to draw from.  The design will be
+flexible enough to incorporate other kinds of events.  Initial
+experiments will use the simulation to determine the reliability of
+the orderings of events as a function of their separation in time, the
+strength of the effect they have on measurements, and the size of the
+data set.  We will use these results to provide guidelines on the
+interpretation of the output of the event-based ordering algorithm.
+
+Next we will use the basic event-ordering algorithm to order
+onset-of-atrophy events for standard freesurfer regions in two large
+data sets: ADNI and TrackHD.  \note{Need to budget significant time
+for preprocessing of these data sets.}  Results of both studies will
+be publishable in their own right and the guidelines from the
+simulation will allow more reliable interpretation than we provide for
+the preliminary results in~\cite{FonteijnScience10}.  We will also
+evaluate the consistency of the results by running the algorithm on
+subsets of varying sizes from both data sets.
+
+- Output/milestones: Consistency paper (sims and subsets); High-impact
+orderings papers (one for AD, one for HD - clinical collaborators to
+lead); multi-modal paper; guidelines and software release.
+
+\note{Classification? Better than standard approaches like Kloppel et
+al?  See recent NIMG review of classification techniques in AD.}
+
+Work Package 1.5 Multi modal models of AD
+
+Although our preliminary study \cite{FonteijnScience10} already includes 
+clinical classification into the event ordering, there is much more scope
+to build even richer models of disease progression. Two data sources are of
+special interest: in vivo measurements of amyloid and NFT depositions and in vivo
+measurements of connectivity. Recently, researchers have developed the PiB compound
+to measure amyloid deposition using in vivo PET scans. Incorporating the regional
+deposition of amyloid placques into our disease progression model would greatly enhance
+our understanding of the relationship between amyloid deposition and neuronal atrophy.
+Using Diffusion MRI and resting-state fMRI, we can also gain extensive knowledge about the
+anatomical and functional connectivity of the brain. Incorporating this information in our 
+disease progression model will lead to new insight into the question whether neuronal
+loss is mediated through neuronal connectivity and whether neuronal loss preceeds deterioration of 
+connectivity.
+Studentship: demonstrator of multimodality combining clinical
+information, PIB-PET and atrophy from MRI.  What data set can we use?
+
+
+\note{Old} WP1 - Run sequential events and groups models on large data
+sets: ADNI, TrackHD.  Evaluate the relative powers of various
+implementation parameters: registration algorithm, parcellation,
+features (note for example Cherubini et al ISMRM 2010 604 - MD is a
+better predictor of normal aging than grey matter atrophy).
+Demonstrate on multimodal data sets including clinical information.
+Hand over detailed analysis of results to clinical collaborators.
+
+Evaluate discriminatory power of the models for example distinguishing AD and
+HD or AD from other dementias.  Compare classification power with that of more
+traditional statistics from whole progression, as in Kloppel et al SVM
+classification.
+
+Work Package 2.  Automatic staging.
+
+The simulation system from WP1 also provides a test bed for the groups
+model.  We will determine the sensitivity and stability of the model
+in a similar way to the events model.
+
+- Evaluate in simulation: how many stages recoverable as a function of
+separation and detectability of events, data set size.
+
+- Run on ADNI for comparison with Braak and Braak.
+
+- Run on TrackHD.
+
+- Evaluate consistency on subsets
+
+- Run on multimodal data set.  Compare with Dubois?
+
+- Output/milestones: Initial theory paper (sims and subsets); high
+impact clinical papers (one for AD, one for HD - clinical
+collaborators to lead); multi-modal paper; software and guidelines
+release.
+
+Work Package 3.  Subtyping.
+
+- Extend the simulation to mixtures of progressions.
+
+- Evaluate the potential for recovering subtypes as a function of data
+set size, number of subtypes, degree of difference of subtypes.
+
+- Demonstrator with known mixtures: TrackHD+ADNI.  Evaluate
+consistency and separability using subsets of the full data set.
+
+- Use ADNI to test for separation of visual variant AD.
+
+- Use TrackHD to test for separation of clinical phenotypes in HD
+(more speculative).
+
+- Run in exploratory mode on both AD and HD
+
+- Output/milestones: High impact theory paper (sims and subsets for
+evaluation, demonstration of subtype descrimination on ADNI and
+TrackHD); high impact clinical papers on exploratory analyses (one for
+AD, one for HD - clinical collaborators to lead); software and
+guidelines release.
+
+\note{Old} WP3 - Mixture models.  Evaluate the potential of mixture
+models in simulation for identifying and separating subgroups.  Test
+in real data sets with known mixtures.  Easy ones might be mixtures of
+AD and controls of HD and controls.  Harder one is pulling out the
+clinical phenotypes from HD data sets.  Test in two ways: as
+hypothesis test, ie we hypothesize that the HD data set contains two
+phenotypes, does the data support the hypothesis?  Second, as a
+hypothesis generator: given the HD data set, what's the most likely
+number of separate groups?  Do they correspond to known phenotypes?
+Run on ADNI, TrackHD and write up collaborative papers with clinical
+groups.
+
+Work Package 4.  Causality.
+
+\note{Old} WP4 - Causality.  Extend the models to include potential
+causal relationships.  Note that care is required in interpretation,
+as you may pick up events that simply have a common cause.  Evaluate
+potential for identification of causality in simulation; determine
+sampling density and number of samples required.  Test likely causal
+relationships, such as amyloid leads to atrophy in ADNI.  Test more
+speculative causal relationships, such as connectivity of loss.  Study
+hypothesis driven modelling problems - eg connectivity of loss.  Also
+examine the possibility for exploratory causal hypothesis generation.
+Run on ADNI and TrackHD and publish in collaboration with clinical
+groups.  Check out the causal stuff in resting state, eg abstract 3494
+ISMRM 2010.
+
+- Relevance to beneficiaries
+
+- Management
+
+\end{document}
+
+

@@ -1,0 +1,417 @@
+@article{AlexanderNI10,
+  author = {Alexander, D. C. and Hubbard, P. L. and Hall, M. G. and Moore, E. A. and Ptito, M. and Parker, G. J. M. and Dyrby, T. B.},
+  year = {2010},
+  title = {Orientationally invariant indices of axon diameter and density from diffusion {MRI}},
+  journal = {NeuroImage},
+  volume = {52},
+  pages ={1374--1389}}
+   
+@article{AlexanderMRM08,
+  author = {Alexander, D. C.},
+  year = {2008},
+  title = {A general framework for experiment design in diffusion {MRI} and its application in measuring direct tissue-microstructure features},
+  journal = {Magnetic Resonance in Medicine},
+  volume = {60},
+  pages = {439--448}}
+   
+@article{AlexanderNI05,
+  author = {Alexander, D. C. and Barker, G. J.},
+  year = {2005},
+  title = {Optimal imaging parameters for fibre-orientation estimation in diffusion {MRI}},
+  journal = {NeuroImage},
+  volume = {27},
+  pages = {357--367}}
+   
+@article{AlexanderIJCV01,
+  author = {Alexander, D. C. and Buxton, B. F.},
+  year = {2001},
+  title = {Statistical modeling of colour data},
+  journal = {International Journal of Computer Vision},
+  volume = {44},
+  pages = {87--109}}
+   
+@ARTICLE{BraakActaNeuro91,
+  author = {Braak, H. and Braak, E.},
+  title = {{Neuropathological stageing of Alzheimer-related changes}},
+  journal = {Acta neuropathologica},
+  year = {1991},
+  volume = {82},
+  pages = {239--259},
+  number = {4},
+  publisher = {Springer}
+}
+
+@article{CercignaniMRM06,
+  author = {Cercignani, M. and Alexander, D. C.},
+  year = {2006},
+  title = {Optimal acquisition schemes for in vivo quantitative magnetization transfer MRI},
+  journal = {Magnetic Resonance in Medicine},
+  volume = {56},
+  pages = {803--810}}
+   
+@ARTICLE{DickersonCerCort09,
+  author = {Dickerson, B.C. and Bakkour, A. and Salat, D.H. and Feczko, E. and
+        Pacheco, J. and Greve, D.N. and Grodstein, F. and Wright, C.I. and
+        Blacker, D. and Rosas, H.D. and others},
+  title = {{The cortical signature of Alzheimer's disease: regionally specific
+        cortical thinning relates to symptom severity in very mild to mild
+        AD dementia and is detectable in asymptomatic amyloid-positive individuals}},
+  journal = {Cerebral Cortex},
+  year = {2009},
+  volume = {19},
+  pages = {497},
+  number = {3},
+  issn = {1047-3211},
+  publisher = {Oxford Univ Press}
+}
+
+@article{DraganskiJNeurosci08,
+  author = {Draganski B. and Kherif, F. and Kloppel, S. and Cook, P. A. and Alexander, D. C. and Parker, G. J. M. and Deichmann, R. and Ashburner, J. and Frackowiak, R. S.},
+  year = {2008},
+  title = {Evidence for segregated and integrative connectivity patterns in the human Basal Ganglia},
+  journal = {Journal of Neuroscience},
+  volume = {28},
+  pages = {7143--7152}}
+   
+@article{DrobnjakJMR10,
+  author = {Drobnjak, I. and Siow, B. and Alexander, D. C.},
+  year = {2010},
+  title = {Optimizing gradient waveforms for microstructure sensitivity in diffusion-weighted {MRI}},
+  journal = {Journal of Magnetic Resonance},
+  volume = {206},
+  pages = {41--51}}
+   
+@ARTICLE{FischlNeuron02,
+  author = {Fischl, B. and Salat, D.H. and Busa, E. and Albert, M. and Dieterich,
+        M. and Haselgrove, C. and van der Kouwe, A. and Killiany, R. and
+        Kennedy, D. and Klaveness, S. and others},
+  title = {{Whole Brain Segmentation:: Automated Labeling of Neuroanatomical
+        Structures in the Human Brain}},
+  journal = {Neuron},
+  year = {2002},
+  volume = {33},
+  pages = {341--355},
+  number = {3},
+  publisher = {Elsevier}
+}
+
+@ARTICLE{FischlCerCort04,
+  author = {Fischl, B. and Van Der Kouwe, A. and Destrieux, C. and Halgren, E.
+        and Segonne, F. and Salat, D.H. and Busa, E. and Seidman, L.J. and
+        Goldstein, J. and Kennedy, D. and others},
+  title = {{Automatically parcellating the human cerebral cortex}},
+  journal = {Cerebral Cortex},
+  year = {2004},
+  volume = {14},
+  pages = {11},
+  number = {1},
+  publisher = {Oxford Univ Press}
+}
+
+@article{FonteijnScience11,
+  author = {Fonteijn, H. M. and Modat, M. and Clarkson, M. J. and Barnes, J. and Lehmann, M. and Hobbs, N. Z. and Scahill, R. I. and Tabrizi, S. J. and Ourselin, S. and Fox, N. C. and Alexander, D. C.},
+  year = {2011},
+  title = {An event-based model for disease progression},
+  journal = {In preparation.  Proposal will wait for this to be accepted somewhere.},
+  volume = {},
+  pages = {}}
+   
+@article{HallTMI09,
+  author = {Hall, M. G. and Alexander, D. C.},
+  year = {2009},
+  title = {Convergence and parameter choice for {Monte-Carlo} simulations of diffusion {MRI}},
+  journal = {IEEE Trans. Medical Imaging},
+  volume = {28},
+  pages = {1354--1364}}
+   
+@ARTICLE{HenleyJNeurol09,
+  author = {Henley, S.M.D. and Wild, E.J. and Hobbs, N.Z. and Scahill, R.I. and
+        Ridgway, G.R. and MacManus, D.G. and Barker, R.A. and Fox, N.C. and
+        Tabrizi, S.J.},
+  title = {{Relationship between CAG repeat length and brain volume in premanifest
+        and early Huntington's disease}},
+  journal = {Journal of neurology},
+  year = {2009},
+  volume = {256},
+  pages = {203--212},
+  number = {2},
+  publisher = {Springer}
+}
+
+@article{HerrupJNeurosci10,
+author = {Herrup, Karl},
+title = {Reimagining Alzheimer's Disease--An Age-Based Hypothesis},
+journal = {J. Neurosci.},
+volume = {30},
+number = {50},
+pages = {16755-16762},
+doi = {10.1523/JNEUROSCI.4521-10.2010},
+year = {2010},
+URL = {http://www.jneurosci.org/cgi/content/abstract/30/50/16755},
+eprint = {http://www.jneurosci.org/cgi/reprint/30/50/16755.pdf}
+}
+
+@ARTICLE{JackLancetNeurol10,
+  author = {Jack Jr, C.R. and Knopman, D.S. and Jagust, W.J. and Shaw, L.M. and
+	Aisen, P.S. and Weiner, M.W. and Petersen, R.C. and Trojanowski,
+	J.Q.},
+  title = {{Hypothetical model of dynamic biomarkers of the Alzheimer's pathological
+	cascade}},
+  journal = {The Lancet Neurology},
+  year = {2010},
+  volume = {9},
+  pages = {119--128},
+  number = {1},
+  issn = {1474-4422},
+  publisher = {Elsevier}
+}
+
+@article{JansonsIP03,
+  author = {Jansons, K. M. and Alexander, D. C.},
+  year = {2003},
+  title = {Persistent Angular Structure: new insights from diffusion {MRI} data},
+  journal = {Inverse Problems},
+  volume = {19},
+  pages = {1031--1046}}
+   
+@article{JonesNI02,
+title = "Spatial Normalization and Averaging of Diffusion Tensor MRI Data Sets",
+journal = "NeuroImage",
+volume = "17",
+number = "2",
+pages = "592 - 617",
+year = "2002",
+note = "",
+issn = "1053-8119",
+doi = "DOI: 10.1006/nimg.2002.1148",
+url = "http://www.sciencedirect.com/science/article/B6WNP-46XH1RW-7/2/5347ae24884b92bdb3c3700094c4533e",
+author = "Derek K. Jones and Lewis D. Griffin and Daniel C. Alexander and Marco Catani and Mark A. Horsfield and Robert Howard and Steve C.R. Williams",
+keywords = "diffusion tensor",
+keywords = "MRI",
+keywords = "spatial normalization",
+keywords = "coregistration",
+keywords = "mean",
+keywords = "median",
+keywords = "mode",
+keywords = "central tendency",
+keywords = "fractional anisotropy",
+keywords = "tractography",
+keywords = "group mapping"
+}
+
+@article{ModatCMPB10,
+  author = {Modat, M. and Ridgway, G. R. and Taylor, Z. A. and Lehmann, M. and Barnes, J. and Hawkes, D. J. and Fox, N. C. and Ourselin, S.},
+  year = {2010},
+  title = {Fast free-form deformation using graphics processing units},
+  journal = {Comput Methods Programs Biomed},
+  volume = {98},
+  pages = {278--284}}
+   
+@inproceedings{MorganCDMRI10,
+  author = {Morgan, G. L. and Zhang, H. and Whitcher, B. and Alexander, D. C.},
+  year = {2010},
+  title = {A spatial variation model of white matter microstructure},
+  booktitle = {Proc. CDMRI workshop of MICCAI},
+  address = {Beijing},
+  publisher = {Springer},
+  pages ={Accepted}}
+   
+@article{MuellerAlzDement05,
+title = "Ways toward an early diagnosis in Alzheimer's disease: The Alzheimer's Disease Neuroimaging Initiative (ADNI)",
+journal = "Alzheimer's and Dementia: The Journal of the Alzheimer's Association",
+volume = "1",
+number = "1",
+pages = "55 - 66",
+year = "2005",
+note = "",
+issn = "1552-5260",
+doi = "DOI: 10.1016/j.jalz.2005.06.003",
+url = "http://www.sciencedirect.com/science/article/B7W6D-4GTDF6W-P/2/97a945d9d0b7f52838e4932f2f05c351",
+author = "Susanne G. Mueller and Michael W. Weiner and Leon J. Thal and Ronald C. Petersen and Clifford R. Jack and William Jagust and John Q. Trojanowski and Arthur W. Toga and Laurel Beckett",
+keywords = "Positron-emission tomography",
+keywords = "Single photon emission tomography",
+keywords = "Magnetic resonance imaging",
+keywords = "Biochemical biomarker",
+keywords = "Genetic biomarker"
+}
+
+@article{NewtonBrain06,
+  author = {Newton, J. M. and Ward, N. S. and Parker, G. J. M. and Deichmann, R. and Alexander, D. C. and Friston, K. J. and Frackowiak, R. S. J.},
+  year = {2006},
+  title = {Non-invasive mapping of corticofugal fibres from multiple motor areas - relevance to stroke recovery},
+  journal = {Brain},
+  volume = {127},
+  pages = {1844--1858}}
+   
+@inproceedings{PanagiotakiMICCAI09,
+  author = {Panagiotaki, E. and Fonteijn, H. and Siow, B. and Hall, M. G. and Price, A. and Lythgoe, M. F. and Alexander, D. C.},
+  year = {2009},
+  title = {Two-compartment models of the diffusion {MR} signal in brain white matter},
+  booktitle = {Proc. MICCAI, LNCS 5761},
+  address = {London},
+  publisher = {Springer},
+  pages ={329--336}}
+   
+@inproceedings{PanagiotakiMICCAI10,
+  author = {Panagiotaki, E. and Hall, M. G. and Zhang, H. and Siow, B. and Lythgoe, M. F. and Alexander, D. C.},
+  year = {2009},
+  title = {Two-compartment models of the diffusion {MR} signal in brain white matter},
+  booktitle = {Proc. MICCAI, LNCS 5761},
+  address = {London},
+  publisher = {Springer},
+  pages ={329--336}}
+   
+@article{ParkerNI05,
+  author = {Parker, G. J. M. and Luzzi, S. and Alexander, D. C. and Wheeler-Kingshott, C. A. M. and Ciccarelli, O. and Lambon-Ralph, M. A.},
+  year = {2005},
+  title = {Non-invasive structural mapping of two auditory-language pathways in
+the human brain},
+  journal = {NeuroImage},
+  volume = {24},
+  pages = {656--666}}
+   
+@article{ParkerPTRS05,
+  author = {Parker, G. J. M. and Alexander, D. C.},
+  year = {2005},
+  title = {Probabilistic anatomic connectivity derived from the microscopic persistent angular structure of cerebral tissue},
+  journal = {Philosophical Transactions of the Royal Society B},
+  volume = {360},
+  pages = {893--902}}
+   
+@article{PowellNeurol05,
+  author = {Powell, H. W. R. and Parker, G. J. M. and Alexander, D. C. and Symms, M. R. and Boulby, P. A. and Barker, G. J. and Koepp, M. J. and Duncan, J. S.},
+  year = {2005},
+  title = {{MR}-Tractography predicts visual field defects following temporal lobe resection},
+  journal = {Neurology},
+  volume = {64},
+  pages = {596--599}}
+   
+@inproceedings{PrevostISBI10,
+  author = {Prevost, R. and Buckley, D. L. and Alexander, D. C.},
+  year = {2010},
+  title = {Optimization of the DCE-CT protocol using active imaging},
+  booktitle = {Proc. ISBI},
+  address = {Rotterdam},
+  publisher = {IEEE}}
+   
+@ARTICLE{PuolamakiPLoSCompBiol06,
+  author = {Puolamaki, K. and Fortelius, M. and Mannila, H.},
+  title = {{Seriation in paleontological data using Markov chain Monte Carlo
+	methods}},
+  journal = {PLoS Comput Biol},
+  year = {2006},
+  volume = {2},
+  pages = {e6},
+  number = {2}
+}
+
+@article{RidhaRad07,
+  author = {Ridha, B. H. and Tozer, D. J. and Symms, M. R. and Stockton, K. C. and Lewis, E. B. and Siddique, M. M. and MacManus, D. G. and Rossor, M. N. and Fox, N. C. and Tofts, P. S.},
+  year = {2007},
+  title = {Quantitative magnetization transfer imaging in Alzheimer's disease},
+  journal = {Radiology},
+  volume = {244},
+  pages = {832--837}}
+   
+@ARTICLE{ScahillPNAS02,
+  author = {Scahill, R.I. and Schott, J.M. and Stevens, J.M. and Rossor, M.N.
+	and Fox, N.C.},
+  title = {{Mapping the evolution of regional atrophy in Alzheimer's disease:
+	unbiased analysis of fluid-registered serial MRI}},
+  journal = {Proceedings of the National Academy of Sciences of the United States
+	of America},
+  year = {2002},
+  volume = {99},
+  pages = {4703},
+  number = {7},
+  publisher = {National Acad Sciences}
+}
+
+@inproceedings{SenanayakeBMVC07,
+  author = {Senanayake, C. R. and Alexander, D. C.},
+  year = {2007},
+  title = {Colour transfer by feature based histogram registration},
+  booktitle = {Proc. BMVC},
+  publisher = {BMVA}}
+   
+@incollection{SeunarineBehrensBook09,
+   author = {Seunarine, K. K. and Alexander, D. C.},
+   year = {2009},
+   title = {Multiple fibers: beyond the diffusion tensor},
+   booktitle = {Diffusion {MRI}: from quantitative measurement to in vivo neuroanatomy},
+   editor = {Johansen-Berg, H. and Behrens, T. E. J.},
+   publisher = {Academic Press},
+  pages = {56--74}}
+
+@inproceedings{SherbondyMICCAI10,
+  author = {Sherbondy, A. J. and Rowe, M. C. and Alexander, D. C.},
+  year = {2010},
+  title = {{MicroTrack}: an algorithm for concurrent projectome and microstructure estimation},
+  booktitle = {Proc. MICCAI},
+  address = {Beijing},
+  publisher = {Springer},
+  pages ={183--190}}
+   
+@ARTICLE{TabriziLancetNeurol09,
+  author = {Tabrizi, S.J. and Langbehn, D.R. and Leavitt, B.R. and Roos, R.A.C.
+	and Durr, A. and Craufurd, D. and Kennard, C. and Hicks, S.L. and
+	Fox, N.C. and Scahill, R.I. and others},
+  title = {{Biological and clinical manifestations of Huntington's disease in
+	the longitudinal TRACK-HD study: cross-sectional analysis of baseline
+	data}},
+  journal = {The Lancet Neurology},
+  year = {2009},
+  volume = {8},
+  pages = {791--801},
+  number = {9},
+  issn = {1474-4422},
+  publisher = {Elsevier}
+}
+
+@article{ThompsonJNeurosci03,
+author = {Thompson, Paul M. and Hayashi, Kiralee M. and de Zubicaray, Greig and Janke, Andrew L. and Rose, Stephen E. and Semple, James and Herman, David and Hong, Michael S. and Dittmer, Stephanie S. and Doddrell, David M. and Toga, Arthur W.},
+title = {Dynamics of Gray Matter Loss in Alzheimer's Disease},
+journal = {J. Neurosci.},
+volume = {23},
+number = {3},
+pages = {994-1005},
+year = {2003},
+URL = {http://www.jneurosci.org/cgi/content/abstract/23/3/994},
+eprint = {http://www.jneurosci.org/cgi/reprint/23/3/994.pdf}
+}
+
+@article{ThompsonCerCort01,
+author = {Thompson, P M and Moussai, J and Zohoori, S and Goldkorn, A and Khan, A A and Mega, M S and Small, G W and Cummings, J L and Toga, A W}, 
+title = {{Cortical variability and asymmetry in normal aging and Alzheimer's disease.}}, 
+volume = {8}, 
+number = {6}, 
+pages = {492-509}, 
+year = {1998}, 
+doi = {10.1093/cercor/8.6.492}, 
+URL = {http://cercor.oxfordjournals.org/content/8/6/492.abstract}, 
+eprint = {http://cercor.oxfordjournals.org/content/8/6/492.full.pdf+html}, 
+journal = {Cerebral Cortex} 
+}
+
+@article{YogarajahBrain10,
+  author = {Yogarajah, M. and Focke, N. K. and Bonelli, S. B. and Thompson, P. and Vollmar, C. and McEvoy, A. W. and Alexander, D. C. and Symms, M. R. and Koepp, M. J. and Duncan, J. S.},
+  year = {2010},
+  title = {The structural plasticity of white matter networks following anterior temporal lobe resection},
+  journal = {Brain},
+  volume = {133},
+  pages = {2348--2364}}
+   
+@inproceedings{ZhangMICCAI10,
+  author = {Zhang, H. and Alexander, D. C.},
+  year = {2010},
+  title = {Axon diameter mapping in the presence of orientation dispersion with diffusion {MRI}},
+  booktitle = {Proc. MICCAI},
+  address = {Beijing},
+  publisher = {Springer},
+  pages ={640--647}}
+   
+
+
+
+
+

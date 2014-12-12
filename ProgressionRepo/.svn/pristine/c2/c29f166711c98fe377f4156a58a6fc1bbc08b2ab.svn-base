@@ -1,0 +1,78 @@
+\relax 
+\citation{carbone1971report}
+\citation{braak1991neuropathological}
+\citation{scahill2002mapping}
+\citation{thompson2001cortical}
+\citation{dickerson2009cortical}
+\@writefile{toc}{\contentsline {title}{An Event-Based Disease Progression model and its application to familial Alzheimer's Disease}{1}}
+\@writefile{toc}{\authcount {8}}
+\@writefile{toc}{\contentsline {author}{Hubert M. Fonteijn\unskip {} \and Matt J. Clarkson\unskip {} \and Marc Modat\unskip {} \and Josephine Barnes\unskip {} \and Manja Lehmann\unskip {} \and Sebastien Ourselin\unskip {} \and Nick C. Fox\unskip {} \and Daniel C. Alexander \unskip {}}{1}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}}
+\citation{puolamäki2006seriation}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Theory}{3}}
+\newlabel{theory}{{2}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Event-based model}{3}}
+\newlabel{eq:likelihood1}{{1}{3}}
+\newlabel{eq:likelihood2}{{2}{3}}
+\citation{gilks1996markov}
+\citation{dempster1977maximum}
+\citation{mclachlan2000finite}
+\newlabel{eq:likelihood3}{{3}{4}}
+\newlabel{eq:posteriorprobability}{{4}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}The likelihood of the data given events}{4}}
+\newlabel{mixtureLikelihood}{{2.2}{4}}
+\newlabel{eq:likelihood4}{{5}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Outliers}{4}}
+\newlabel{eq:outlier}{{6}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}The MCMC algorithm}{5}}
+\newlabel{mcmc}{{2.4}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Methods}{5}}
+\newlabel{methods}{{3}{5}}
+\citation{ridha2006tracking}
+\citation{folstein1975mini}
+\citation{fischl2002whole,fischl2004automatically}
+\citation{fischl2004automatically}
+\citation{ridha2006tracking}
+\citation{modat2010fast}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Patients}{6}}
+\newlabel{patients}{{3.1}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Imaging}{6}}
+\newlabel{imaging}{{3.2}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Preprocessing}{6}}
+\newlabel{preprocessing}{{3.3}{6}}
+\citation{braak1991neuropathological}
+\citation{scahill2002mapping}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Results}{7}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Event-based disease progression for the fAD cohort. The upper panel shows the ordering of event labels. The vertical spacing is arbitrary and is simply for visualization to separate the positions of the icons. The horizontal position shows the ordering of events, which is based on the position of each event, averaged over all MCMC samples. The lower panel shows snapshots of atrophy on average spreads through the brain in fAD.}}{8}}
+\newlabel{fig:eventProgressionFAD}{{1}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Positional variance of the event sequence for the fAD cohort. For each region, the logarithm of the frequency with which a region visits a position in the event sequence during the MCMC procedure is plotted. The regions are ordered according to position in the event sequence, averaged over all MCMC iterations}}{9}}
+\newlabel{fig:positionalVarianceFAD}{{2}{9}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Discussion}{9}}
+\newlabel{discussion}{{5}{9}}
+\citation{freeborough1998modeling}
+\citation{mueller2005ways}
+\citation{tabrizi2009biological}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Classification results for all follow-up scans in all patients. We use the event-based disease progression model to compute the disease stage each scan's stage in the model. Each separate line represents one individual patient. Within patients, later follow-up scans correspond to later stages in the model.}}{10}}
+\newlabel{fig:patientClassification}{{3}{10}}
+\citation{mannila2000global}
+\bibstyle{splncs03}
+\bibdata{bibliography}
+\bibcite{braak1991neuropathological}{1}
+\bibcite{carbone1971report}{2}
+\bibcite{dempster1977maximum}{3}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Acknowledgments}{11}}
+\bibcite{dickerson2009cortical}{4}
+\bibcite{fischl2002whole}{5}
+\bibcite{fischl2004automatically}{6}
+\bibcite{folstein1975mini}{7}
+\bibcite{freeborough1998modeling}{8}
+\bibcite{gilks1996markov}{9}
+\bibcite{mannila2000global}{10}
+\bibcite{mclachlan2000finite}{11}
+\bibcite{modat2010fast}{12}
+\bibcite{mueller2005ways}{13}
+\bibcite{puolamäki2006seriation}{14}
+\bibcite{ridha2006tracking}{15}
+\bibcite{scahill2002mapping}{16}
+\bibcite{tabrizi2009biological}{17}
+\bibcite{thompson2001cortical}{18}

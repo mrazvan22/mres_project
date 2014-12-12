@@ -1,0 +1,206 @@
+
+%%%%%%%%%%%%%%%%%%%%%%% file typeinst.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is the LaTeX source for the instructions to authors using
+% the LaTeX document class 'llncs.cls' for contributions to
+% the Lecture Notes in Computer Sciences series.
+% http://www.springer.com/lncs       Springer Heidelberg 2006/05/04
+%
+% It may be used as a template for your own input - copy it
+% to a new file with a new name and use it as the basis
+% for your article.
+%
+% NB: the document class 'llncs' has its own and detailed documentation, see
+% ftp://ftp.springer.de/data/pubftp/pub/tex/latex/llncs/latex2e/llncsdoc.pdf
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[runningheads,a4paper]{llncs}
+
+\usepackage{amssymb}
+\setcounter{tocdepth}{3}
+\usepackage{graphicx}
+\usepackage{url}
+
+\begin{document}
+
+\mainmatter  % start of an individual contribution
+
+% first the title is needed
+\title{An Event-Based Disease Progression model and its application to familial Alzheimer's Disease}
+% a short form should be given in case it is too long for the running head
+\titlerunning{An Event-Based Disease Progression Model.}
+\authorrunning{Fonteijn et al.}
+% \author{Submission number: 228}
+\author{Hubert M. Fonteijn\inst{1} \and Matt J. Clarkson\inst{1} \and Marc Modat\inst{1} \and Josephine Barnes\inst{2} \and Manja Lehmann\inst{2} 
+\and Sebastien Ourselin\inst{1} \and Nick C. Fox\inst{2} \and Daniel C. Alexander \inst{1}}
+
+\institute{
+Centre for Medical Image Computing,
+\ Department of Computer Science and Department of Medical Physics and Bioengineering, University College London, UK \\
+\email{h.fonteijn@cs.ucl.ac.uk}
+\and
+Dementia Research Centre,
+\ Institute of Neurology, University College London, UK
+}
+
+%
+\maketitle
+
+
+\begin{abstract}
+This study introduces a novel event-based model for disease progression. The model describes disease progression as a series of events. An event can consist of a significant change in symptoms or in tissue. We construct a forward model that relates heterogeneous measurements from a whole cohort of patients and controls to the event sequence and fit the model with a Bayesian estimation framework. The model does not rely on \emph{a priori} classification of patients and therefore has the potential to describe disease progression in much greater detail than previous approaches. We demonstrate our model on serial T1 MRI data from a familial Alzheimer's disease cohort. We show progression of neuronal atrophy on a much finer level than previous studies, while confirming progression patterns from pathological studies,  and integrate clinical events into the model.
+\keywords{Disease progression, Alzheimer's disease, atrophy, computational model}
+\end{abstract}
+
+\section{Introduction}
+Every disease is uniquely characterized by a progression of symptoms and pathology, whose understanding is vital for accurate diagnosis and treatment planning. Modeling patterns of disease progression is a key aim of medical science, because it enables basic understanding of the disease and provides staging systems that assist treatment. Examples of staging systems that are based on disease progression can be found in diseases such as cancer and HIV. For instance, the Ann Arbor system \cite{carbone1971report} classifies lymphomas into four stages which progress from a localized tumor in a single lymph node to a widespread involvement of lymph nodes and organs. 
+
+Disease progression occurs at various levels, ranging from the symptoms a patient experiences to cellular and biochemical changes. For instance, Alzheimer's disease (AD) is characterized by a progressive deterioration of cognitive abilities, which is caused by severe pathology at the cellular level. This pathology consists of extracellular Amyloid plaques and intracellular neurofibrillary tangles (NFT), which are thought to cause local neuronal atrophy. Braak and Braak \cite{braak1991neuropathological} show that the spread of NFT's follows a very specific pattern, spreading from memory related areas such as the hippocampus towards areas in the medial temporal lobe, the parietal cortex and the prefrontal cortex. Only in the last stage of AD are primary cortices affected. Interestingly, there is now ample evidence that neuronal atrophy can be measured \emph{in vivo} with T1-weighted Magnetic Resonance Imaging (MRI). Scahill et al. \cite{scahill2002mapping} use non-linear registration methods to measure atrophy and show that the spread of atrophy follows a very similar pattern to the spread of NFT's. Thompson et al. \cite{thompson2001cortical} and Dickerson et al. \cite{dickerson2009cortical} show a very similar effect when studying differences in cortical thickness.
+
+Current models of disease progression are relatively crude. These models use symptomatic staging to divide the patients into a small number of groups, which typically characterize disease state as ``presymptomatic'', ``mild'', ``moderate'' or ``severe''. They then assess the differences in biomarkers among those groups. Symptomatic staging is an invaluable tool to explain disease progression to patients and their family. However, it relies on imprecise clinical data and therefore has limited temporal resolution, which limits its power to discriminate and stage diseases.  Furthermore, symptomatic staging often suffers from high inter-rater variability. Current analysis methods therefore do not deliver the promise of in vivo measurements to develop models of disease progression that match or even surpass the level of temporal detail of pathology-based models.
+
+In this study we take a direct computational approach to disease progression modeling. We model the progression pattern as a sequence of discrete events. Similar models arise in palaeontology, where researchers fit time lines of the emergence and extinction of species to the fossil occurrence of species in different geological time periods \cite{puolamäki2006seriation}. In our model, the events are changes in patient state, such as the onset of a new symptom (``patient reports memory loss to GP'') or the first measurement of a tissue pathology (``lumbar puncture shows raised beta amyloid''). The aim is to find the ordering of the events that is most consistent with the measurements from a cohort of patients. 
+
+The event-based computational modeling approach has major advantages over current approaches to modeling disease progression:
+First, unlike all previous approaches, it does not rely on \emph{a priori} staging of patients using clinical symptoms, but extracts the event ordering directly from the data. This enables the model to express a much more detailed time line of disease progression (see figures \ref{fig:eventProgressionFAD} and \ref{fig:positionalVarianceFAD}) limited only by the number of events considered rather than crude clinical staging. The approach also naturally captures uncertainty and variance in the ordering (figure \ref{fig:positionalVarianceFAD}) reflecting measurement error and heterogeneity over the population or cohort. Furthermore, the more detailed time line provides a finer grained assessment of new patients, as it is straightforward to take a new patients data and identify their position along the model time line. It is also a more natural description of the progression than those obtained indirectly through clinical staging.
+Second, model fitting naturally exploits longitudinal or cross-sectional data sets or, as we demonstrate here, heterogeneous data sets with different numbers of time points for each patient. Third, the approach combines information from different sources naturally.  Here, for example, we demonstrate orderings of events including regional atrophy events informed by imaging as well as clinical events informed by patients' scores in mental tests.   
+
+We demonstrate this model on serial T1 MRI data from familial Alzheimer's disease (fAD) patients. FAD is a rare autosomal-dominantly inherited variant of Alzheimer's disease which causes early onset. Because fAD mutation carriers will develop AD at a predictable time it is feasible to enroll them in studies before they develop any clinical symptoms, thereby providing a unique opportunity to study changes in biomarkers in the very earliest stages of AD.  The event-based disease progression model shows the disease development in much finer detail than previously seen while confirming existing knowledge about the pattern and progression of atrophy in FAD.
+
+\section{Theory}
+\label{theory}
+
+\subsection{Event-based model}
+The event-based disease progression model consists of a set of events $E_1, \ldots, E_N$ and an ordering $S = (s(1), \ldots, s(N))$, which is a permutation of the integers $1, \ldots, N$ determining the event ordering $E_{s(1)},\ldots, E_{s(N)}$. The set of events are specified a priori and we estimate $S$ from a data set $X$. The full data set $X$ contains a set of measurements $X_j$, $j=1,\ldots, J$, from each of the $J$ patients and $X_l$, $l=1,\ldots, L$, from each of $L$ controls.  In this study, each measurement informs just one event in one patient, and each event has a corresponding measurement.  Thus each $X_j=[x_{1j}, x_{2j}, \ldots, x_{Nj}]^T$ contains exactly $N$ corresponding measurements: $x_{ij}$ informs as to whether $E_i$ in patient $j$ has occurred. However, the formulation adapts naturally to allow multiple measurements to inform single events, single measurements to inform multiple events, and the set of measurements to vary among patients. 
+
+To fit the model to the data, we need to evaluate the likelihood $p(X \mid S)$ of the model given the data.
+We start by fitting simple models for the probability distribution $p(X_i \mid E_i)$ on the measurement $X_i$, the $i^{th}$ measurement in all patients, given that $E_i$ has occurred and, similarly, $p(X_i \mid \neg E_i)$ on $x_i$ given that $E_i$ has not occurred. We provide more detail about this procedure in section \ref{mixtureLikelihood}.
+
+If patient $j$ is at position $n$ in the progression model, events $E_{s(1)},\ldots,E_{s(n)}$ have occurred, while events $E_{s(n+1)},\ldots,E_{s(N)}$ have not, and we can write the likelihood of that patient's data given $S$:
+
+\begin{equation}
+p(X_j \mid S,k)=\prod _{i=1} ^k p(X_{s(i)j} \mid E_{s(i)}) \prod _{i=k+1} ^N p(X_{s(i)j} \mid \neg E_{s(i)}),
+\label{eq:likelihood1}
+\end{equation}
+where we assume individual measurements are independent. We integrate out the hidden variable $k$ to obtain
+
+\begin{equation}
+p(X_j \mid S)=\sum _{k=1} ^N p(k)p(X_j \mid S,k),
+\label{eq:likelihood2}
+\end{equation}
+where $p(k)$ is the prior probability of being at position $k$ in the ordering; we assume uniform priors here.  Next, we assume independence of measurements among patients to obtain
+
+\begin{equation}
+p(X \mid S)=\prod _{j=1} ^J p(X_j \mid S).
+\label{eq:likelihood3}
+\end{equation}
+We use Bayes theorem to obtain the posterior distribution $p(S \mid X)$:
+\begin{equation}
+p(S \mid X)= \frac{p(S)p(X \mid S)}{p(X)}.
+\label{eq:posteriorprobability}
+\end{equation}
+ 
+The normalization constant $p(X)$ is analytically intractable. We therefore use a Markov Chain Monte Carlo algorithm \cite{gilks1996markov} to sample from $p(S \mid X)$. We use flat priors on the ordering $S$, on the assumption that \emph{a priori} all orderings are equally likely. We provide more details about this algorithm in section \ref{mcmc}.
+
+\subsection{The likelihood of the data given events}
+\label{mixtureLikelihood}
+The probability distribution on a measurement $x$ associated with one particular event $E$ has two key components:
+
+\begin{equation}
+p(x) = p(x \mid E)p(E) + p(x \mid \neg E)p(\neg E),
+\label{eq:likelihood4}
+\end{equation}
+which are the distributions on the measurement, conditional on whether E has or has not occurred. However, evaluating equation \ref{eq:likelihood1} requires separate models for both $p(x \mid E)$ and $p(x \mid \neg E)$ in order to evaluate equation \ref{eq:likelihood4}. To obtain models for these two conditional distributions for a particular event $E_i$, we start by fitting a mixture of Gaussians to the set of measurements $Y_i=[x_{ij} \mid j=1 \ldots, J] \bigcup  [x_{il} \mid l=1, \ldots , L]$, associated with event $E_i$ from all patients and controls. To fit the mixture of Gaussians, we use the Expectation Maximization algorithm \cite{dempster1977maximum} with the number of components set to $1,2,\ldots, 5$ and pick the model that minimizes the Bayesian Information Criterion \cite{mclachlan2000finite}. The resulting mixture provides a crude model for $p(x)$ in equation \ref{eq:likelihood4} for this particular i.
+Next, we associate each measurement $x_i$ with the Gaussian component that maximizes its likelihood.  As a model for $p(x \mid \neg E)$, we take the single Gaussian component that is associated to the largest proportion of measurements from controls. The model for $p(x \mid E)$ is the mixture of the remaining components.
+
+\subsection{Outliers}
+
+The simple models for $p(x \mid E)$ and $p(x \mid \neg E)$ in the previous section lack robustness to outliers.  Any algorithm for fitting our model encounters outliers in both distributions frequently.  For example, patients at advanced stages of the disease may exhibit unexpectedly low evidence for one particular event early in the event sequence; in our example application, some heterogeneity of the atrophy progression pattern is not unexpected.  Similarly, a particular control may show high evidence for an event, simply because she is an outlier in the control distribution.  Outliers like these can significantly disrupt fitting the model, because they give close to zero likelihood of a single data item.  An elegant way to accommodate such outliers in the model is simply to include an extra component in both $p(x \mid E)$ and $p(x \mid \neg E)$, which is a uniform distribution on any feasible value of $x$.  For example, we write
+
+\begin{equation}
+p(x \mid E) = f_0 + (1 - f_0) \sum_{i=1}^C f_i N(x \mid \mu _i \sigma _i), 
+\label{eq:outlier}
+\end{equation}
+where $f_0$ is the outlier probability, which we assume is the same for both $p(x \mid E)$ and $p(x \mid \neg E)$.  The minimum possible likelihood is then $f_0$.
+
+\subsection{The MCMC algorithm}
+\label{mcmc}
+
+The MCMC algorithm starts by proposing a random candidate sequence. At each iteration t, a perturbation of the current model $S_t$ swaps the positions of two randomly chosen events, in the next step $S_{t+1} =S'$ with probability min(a, 1) where $a = p(X \mid S')/p(X \mid S_t)$ is the likelihood ratio; otherwise $S_{t+1} = S_t$.  Rather than fix the outlier probability $f_o$, we estimate it from the data as well as S during the MCMC procedure. It is possible to have a separate $f_o$ for each event, but here we assume it is the same within each of the two classes of events we consider (see section \ref{methods}). We restrict $f_o$ to lie between 0 and 0.2 and we use Gaussian proposal distributions with adaptive standard deviations. MCMC algorithms depend on accurate initialization to achieve good mixing properties within realistic time spans. We therefore initialize the MCMC algorithm with the maximum likelihood solution $S_{ML}$ for $p(X \mid S)$, which we find with a greedy ascent algorithm. The greedy ascent algorithm uses the same perturbation rule as the MCMC algorithm, but sets $a=1$ for $p(X \mid S') > p(X \mid S_t)$ or $a=0$ otherwise. We run the algorithm for 2,000 iterations, which generally is enough to reach a local maximum. We repeat the algorithm 10 times from different initialization points to ensure we reach the global maximum. Next, we run the MCMC procedure for 200,000 iterations, of which we discard 100,000 burnin iterations and retain the remaining 100,000 samples. 
+
+\section{Methods}
+\label{methods}
+In this study, we use two types of event: clinical events and atrophy events. Clinical events include the progression to a later clinical status, such as from presymptomatic AD to Mild Cognitive Impairment (MCI). Criteria for progression are outlined in section \ref{patients}. Atrophy events correspond to the occurrence of significant regional atrophy within a patient and are derived from serial T1 MRI data. Section \ref{imaging} provides details about the MRI acquisitions. Section \ref{preprocessing} outlines the preprocessing steps which we use to compute regional atrophy values from the MR images. To fit an ordering of all these events, we then run the MCMC algorithm using the procedures as outlined in section \ref{theory}.
+
+\subsection{Patients}
+\label{patients}
+
+The fAD data we use has been previously analyzed in \cite{ridha2006tracking}. Briefly, nine carriers of autosomal mutations associated to Alzheimer's Disease were recruited from the Cognitive Disorders Clinic at the National Hospital for Neurology and Neurosurgery. 25 Age-matched and sex-matched controls (two to three controls per mutation carrier) were also recruited from spouses, relatives and healthy volunteers. All participants gave written informed consent as approved by the local ethics committee. All mutation carriers underwent comprehensive clinical and neuropsychological assessments, including the mini-mental state examination (MMSE) \cite{folstein1975mini} and volumetric MRI scans, at each visit (41 visits: three to eight per patient). Each control patient had two MRI scans (except two participants who had four scans each) adding up to 54 scans in total. The clinical status of each mutation carrier was classified at each time
+point as: 1) familial Alzheimer's disease, if the patient fulfilled National Institute of Neurological and Communicative Disorders and Stroke and Alzheimer's Disease and Related Disorders (NINCDS-ADRDA) diagnostic criteria for probable Alzheimer's disease; 2) MCI, if the patient fulfilled MCI criteria; and 3) presymptomatic, if participants fell short of both NINCDS-ADRDA and MCI criteria. 
+
+\subsection{Imaging}
+\label{imaging}
+
+Imaging on the fAD cohort was undertaken with two scanners: in the period between 1991 and 2000 a 1.5 T GE Signa MRI scanner (General Electric Medical Systems, Waukesha, WI, USA) was used. T1 images were acquired using a Spoiled Gradient Echo technique with the following parameters: (256 x 128 matrix, field of view 24 x 24 cm, TR/TE/NEX/FA=35 ms/5 ms/1/35$^\circ$) yielding 124 contiguous 1·5 mm thick slices. Between 2000 and 2005 scans were acquired on a different 1.5 T GE Signa scanner. On this scanner T1 images were acquired using an inversion recovery fast spoiled gradient echo sequence with the following parameters: 256 x 256 matrix, field of view 24 x 18 cm, TR/TE/TI/NEX/FA=14 ms/5.4 ms/650 ms/1/15$^\circ$, yielding 124 contiguous 1.5 mm thick slices.
+
+\subsection{Preprocessing}
+\label{preprocessing}
+
+The preprocessing pipeline extracts anatomically defined regions, determines voxel-wise atrophy using non-rigid registration methods and combines both steps to compute regional atrophy values.
+We use Freesurfer to segment the brain into cortical and subcortical structures. Freesurfer starts with a gray matter/white matter segmentation. It then uses a labeling procedure on each subject's data which is based on a training set of manually segmented scans \cite{fischl2002whole,fischl2004automatically}. Thus an anatomical segmentation is achieved which is dependent on each subject's individual anatomy and which has been shown to be statistically equivalent to manual segmentation \cite{fischl2004automatically}. In the fAD data, we supplement Freesurfer's segmentation with subject-specific hippocampus masks, which were manually traced by \cite{ridha2006tracking}.
+We calculate voxel-wise atrophy values using a free form deformation registration method \cite{modat2010fast}. This method first uses a rigid registration to realign the repeat scans to the baseline scan and then uses a set of cubic B-splines to locally deform the repeat scan to match the baseline scan. In each voxel, the change that is required by this matching procedure is quantified by the determinant of the Jacobian of the deformation field. We calculate regional atrophy by calculating the mean Jacobian value for each segmented region. 
+
+\section{Results}
+Figure \ref{fig:eventProgressionFAD} shows the average event sequence for the fAD cohort. This model is based on clinical events and regional atrophy values. We reduce the number of positions in the model by averaging regional atrophy values across hemispheres. We then run the MCMC algorithm to provide a set of event sequences. Finally. we compute the average position of each event over that set of samples and order the events based on that average position. The top row of figure \ref{fig:eventProgressionFAD} shows that ordering.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[trim = 0mm 0mm 0mm 0mm, clip, width=120mm]{figures/gooseplot_fAD}
+\caption{Event-based disease progression for the fAD cohort. The upper panel shows the ordering of event labels. The vertical spacing is arbitrary and is simply for visualization to separate the positions of the icons. The horizontal position shows the ordering of events, which is based on the position of each event, averaged over all MCMC samples. The lower panel shows snapshots of atrophy on average spreads through the brain in fAD.}
+\label{fig:eventProgressionFAD}
+\end{figure}
+
+The first regions to show significant atrophy are the hippocampus, the precuneus and the inferiorparietal cortex, followed by temporal regions, such as the entorhinal cortex. In later stages more and more parietal and prefrontal areas are affected. Only in the last stage are primary cortices, such as the primary motor cortex affected. This progression pattern broadly agrees with how neurofibrillary tangles spread through the brain as demonstrated by Braak and Braak \cite{braak1991neuropathological}. The main difference lies in the early involvement of the precuneus and other parietal areas. Our findings are however concordant with previous studies by for instance Scahill et al., \cite{scahill2002mapping} who have also shown early involvement of these structures. The clinical events are distributed within the first half of the disease progression time line. 
+
+Figure \ref{fig:positionalVarianceFAD} shows the positional variance of each event during the MCMC procedure. This diagram gives a unique insight of uncertainty associated with the progression pattern, which previous models do not provide. We see clearly that the separation of many events close together in the ordering is weak, but events further apart show clear separations. Moreover, we see some separation of consecutive clusters of regions whose ordering rarely overlaps. Finally, the bottom right corner of this figure shows a block of events with equal probability for all positions within that block. These events do not show any evidence that the corresponding event has occurred and their position in the ordering is therefore spread over all positions after the last event, in which there is evidence that the corresponding event has occurred.
+
+The event-based disease progression model develops a time line of disease progression that can be used to position each within the event sequence. As a simple validation of the model, we exploit the fact that we have multiple time pints for each patient; recall that we ignore this information when fitting the model. We determine the position of each patient by maximizing the likelihood of their data, given the maximum a postiori estimate of the event sequence from the MCMC algorithm, with respect to the hidden variable $k$ in equation \ref{eq:likelihood2}.  The test for the validity of the event-based disease progression model is whether later sets of measurements from the same subject are positioned later in the event sequence than earlier measurements. Figure \ref{fig:patientClassification} shows that this is consistently the case for the event-based disease progression model of the fAD cohort. 
+
+\begin{figure}[ht]
+\centering
+\includegraphics[trim = 20mm 40mm 20mm 0mm, clip, width=100mm]{figures/histogram_fAD}
+\caption{Positional variance of the event sequence for the fAD cohort. For each region, the logarithm of the frequency with which a region visits a position in the event sequence during the MCMC procedure is plotted. The regions are ordered according to position in the event sequence, averaged over all MCMC iterations}
+\label{fig:positionalVarianceFAD}
+\end{figure}
+
+Generally, we observe good convergence and mixing of the MCMC algorithm. The average outlier probability is $0.015 \pm 0.004$ for atrophy events and $0.01 \pm 0.03$ for the clinical events, indicating that the outlier probability is well-behaved.
+
+\begin{figure}
+\centering
+\includegraphics[trim = 0mm 60mm 0mm 80mm, clip, width=80mm]{figures/patientclassification}
+\caption{Classification results for all follow-up scans in all patients. We use the event-based disease progression model to compute the disease stage each scan's stage in the model. Each separate line represents one individual patient. Within patients, later follow-up scans correspond to later stages in the model.}
+\label{fig:patientClassification}
+\end{figure}
+
+\section{Discussion}
+\label{discussion}
+In this study, we introduce a new event-based disease progression model and estimation procedure. This model represents a radical departure from previous approaches to study disease progression: instead of relying on classification of patients according to symptomatic criteria, the event-based disease progression model utilizes all aspects of the available data to develop a time	line of disease progression with maximum detail. We apply the model to MRI data from a fAD cohort and find excellent agreement with existing models of disease progression. These results highlight the strength of our approach in several ways: First, the disease progression model does not rely on \emph{a priori} classification of patients and therefore makes less assumptions about the data than previous studies. Nevertheless, it reconstructs a time line of disease progression which agrees well with those studies. Second, our model dramatically improves the temporal resolution of time line of disease progression, when compared to previous studies. Third, the fAD data set contains only a very limited number of patients. It is therefore remarkable that we are able to reconstruct such a detailed time line of disease progression from this data. Finally, we develop a measure of positional variance which indicates the confidence we have about the position of each event in the event sequence. Previously, time lines of disease progression have been developed in an ad hoc fashion by reviewing data from many studies and such time lines therefore did not contain any formal measure of confidence in the sequence of events. To the best of our knowledge, this study is the first to introduce a model that explicitly fits such time lines and that quantifies their uncertainty.
+
+We have omitted several further experiments for brevity, which confirm the robustness of our approach. We only show results from regional atrophy measures that are averaged across hemispheres. We have however also fitted the event-based disease progression model to the complete data set and have found a high correlation between the positions of regions in both hemispheres. We therefore conclude that hemispheric averaging is valid for this disease. We have also tested our model on regional atrophy that was computed with a different non-linear registration algorithm \cite{freeborough1998modeling}. We found broad agreement of event sequences between both registration methods. Future work will test the algorithm on parcellations other than the Freesurfer parcellation.
+
+In many neurodegenerative diseases, including AD \cite{mueller2005ways} and HD \cite{tabrizi2009biological}, large-scale multi-center studies are now underway to investigate the use of a range of measurements, such as structural MRI and CSF measurements, as biomarkers for disease progression. Our model scales up well to larger data sets and would therefore be an excellent candidate to analyze these data sets. It will be interesting to investigate how the increased number of subjects in these data sets will affect the positional variance: the increase in statistical power will lead to lower variance in the event sequence, but the between-subject variability in disease progression will be better sampled, leading potentially to a higher variance in the event sequence. One drawback of such larger data sets is that they are likely to contain misclassifications: for instance, patients can be included in an AD study on the basis of AD-like symptoms, but can in fact have a different disease. We avoid this issue in this study, because in the fAD cohort each patient is selected based on genetic characteristics that are typical for fAD. Future studies will have to investigate the robustness of our model to the misclassifications inherent in current large-scale studies. 
+
+We have assumed that event measurements are independent, even if they are repeated measures within the same subject. It would be interesting to investigate whether incorporating such information for (partially) longitudinal data decreases the variance in the event sequence. Likewise, we have not exploited the considerable correlation we observe between different event measurements in both patients and in controls. In patients, these correlations could be used in a data reduction step, in which events with very similar measurement patterns are grouped together. This would considerably reduce the number of stages and thereby the complexity of the model. In controls, such correlations could be used to develop more sensitive algorithms for event detection. Instead of only relying on the distribution of single event measures in controls to determine whether an event has happened, the conditional distribution of one event measure, given several other (correlated) event measures could be used to predict the event measure in patients and to detect deviations from the predicted value.
+
+The event-based disease progression model can readily be applied to other diseases, neurodegenerative or otherwise. This will be especially useful in cases where a well-established model for disease progression is lacking. Future work will develop the event-based disease progression model further, by for instance including the possibility for event onsets to be simultaneous and incorporating a variance around the event onsets. Another important improvement to the model will be the incorporation of a mixture of event sequences, which will allow the classification of diseases into sub-types. Mixtures of event orderings have already been studied by Manila and Meek \cite{mannila2000global}, but this approach will have to be adapted considerably to be used in the context of disease progression. Other future work will further integrate more measurement types, such as functional and anatomical connectivity measures, CSF measurements and others into the currently developed model for disease progression. This will eventually lead to a rich and detailed model of disease progression in AD and other diseases.
+
+\section{Acknowledgments}
+We thank Martin Rossor, Basil Ridha and Natalie Ryan for their contribution to the clinical aspects of the study. EPSRC grants  EP/D506468/01 and EP/E007748 supported HMF and DCA on this project.
+
+\bibliographystyle{splncs03}
+\bibliography{bibliography}
+
+\end{document}
+

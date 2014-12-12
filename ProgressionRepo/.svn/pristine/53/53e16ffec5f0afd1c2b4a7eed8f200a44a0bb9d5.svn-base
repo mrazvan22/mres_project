@@ -1,0 +1,50 @@
+function VisualizeResultsVerifyMCMC
+
+nr_it_mcmc=[1e04,1e05,1e06];
+change_step=[0.0001,0.0003,0.0004,0.0005,0.0007,0.0008,0.0009,0.001];
+
+%this is the initial maximum likelihood estimates of parameters 
+%these are obtained by fitting a mixuture of gaussians
+trueMeanEvent =-3;
+trueMeanNoEvent=0;
+trueVarEvent = 6.25;
+trueVarNoEvent = 1;
+
+for i =1:length(change_step)
+    for j=1:length(nr_it_mcmc)
+        try
+        load(['verifyDataSimulationMCMC/VerifyMCMCResultWith' num2str(10) '-' num2str(log10(nr_it_mcmc(j))) 'Itr' num2str(change_step(i)) 'Steps.mat'],'parm_struct');
+        err_meanNoEvent(i,j)=abs(mean(parm_struct.thisMean_noevent_mcmc)-trueMeanNoEvent);
+        err_meanEvent(i,j)=abs(mean(parm_struct.thisMean_event_mcmc) - trueMeanEvent);
+        err_VarNoEvent(i,j)=abs(mean(parm_struct.thisCov_noevent_mcmc)-trueVarNoEvent);
+        err_VarEvent(i,j)=abs(mean(parm_struct.thisCov_event_mcmc)-trueVarEvent);  
+        catch
+            fprintf('%s\n','No entry for this parameter');
+        end
+    end
+end
+
+subplot(2,2,1);plot(change_step,err_meanNoEvent(:,1),'r','LineWidth',3); 
+hold on; plot(change_step([1:5,7]),err_meanNoEvent([1:5,7],2),'b','LineWidth',3);
+plot(change_step(2),err_meanNoEvent(2,3),'mx','LineWidth',3);
+title('Mu_NoEvent: Absolute Error between true and average MCMC');
+legend('1e04MCMCIters','1e05MCMCIters','1e06MCMCIters');
+
+subplot(2,2,2);plot(change_step,err_meanEvent(:,1),'r','LineWidth',3); 
+hold on; plot(change_step([1:5,7]),err_meanEvent([1:5,7],2),'b','LineWidth',3);
+plot(change_step(2),err_meanEvent(2,3),'mx','LineWidth',3);
+title('Mu_Event: Absolute Error between true and average MCMC');
+legend('1e04MCMCIters','1e05MCMCIters','1e06MCMCIters');
+
+subplot(2,2,3);plot(change_step,err_VarNoEvent(:,1),'r','LineWidth',3); 
+hold on; plot(change_step([1:5,7]),err_VarNoEvent([1:5,7],2),'b','LineWidth',3);
+plot(change_step(2),err_VarNoEvent(2,3),'mx','LineWidth',3);
+title('Variance_NoEvent: Absolute Error between true and average MCMC');
+legend('1e04MCMCIters','1e05MCMCIters','1e06MCMCIters');
+
+subplot(2,2,4);plot(change_step,err_VarEvent(:,1),'r','LineWidth',3); 
+hold on; plot(change_step([1:5,7]),err_VarEvent([1:5,7],2),'b','LineWidth',3);
+plot(change_step(2),err_VarEvent(2,3),'mx','LineWidth',3);
+title('Variance_Event: Absolute Error between true and average MCMC');
+legend('1e04MCMCIters','1e05MCMCIters','1e06MCMCIters');
+

@@ -1,0 +1,237 @@
+function VisualizeClusteringResults
+
+clear
+close all
+clc
+
+cluster_version=1;
+%1 = EM MoG on single biomarkrs
+%2 = EM MoG on entire data
+%3 = EM on PCA Dimensioanlity reduecd data
+%31 = For visualization only --> compare the PCA clustering with ND All data clustering
+
+% First setting up paths
+addpath('/Users/jaghajan/Documents/Experiments/ADNI_BIOMARKERS_Svn/netlab')
+% All functions are in repos/Code1 and repos/Code1/netlab
+
+% Reading in Jonathan's data
+%file_data = '/cs/research/vision/camino1/camino/fonteijn/Progression/BartlettData/data_biomarkers_ADNI.mat';
+file_data = 'BartlettData/data_biomarkers_ADNI.mat';
+load(file_data);
+
+name_variables = data_struct.name_var;
+data = data_struct.data;
+% This is somewhat cumbersome: the first variable is the subject id, which
+% is actually a string and therefore not included in the data matrix. The
+% data belonging to a variable with variable name name_variables{x} can
+% therefore be found in data(:, x-1)
+% I'm correcting for that here
+I_keep = [2:length(name_variables)];
+name_variables = name_variables(I_keep);
+
+% There are quite a lot of patients in which one of the measurements is missing.
+% Throwing out all of these patients
+I_missing = find(sum(isnan(data), 2));
+data(I_missing, :) = [];
+
+% There are control definitions: the last column are the clinically defined
+% controls (controls == 0, patients == 1), the column before that the
+% CSF-defined controls
+id_controls_clin = data(:, end);
+id_controls_csf = data(:, end-1);
+% Splitting off these variables to avoid confusion
+data(:, (end-1):end) = [];
+
+% Not sure what to do with the CDR scores and avtot, so I'll throw them out for now
+% The CDR scores are either 0, 0.5 and 1, so fitting continuous distributions to those
+% is problematic ***jania:***  I also removed the mmscore as it is discrete
+% and a MoG does not do a good job of fitting it
+I_keep = [1:4 7:12];
+data = data(:, I_keep);
+name_variables = name_variables(I_keep);
+
+[nr_subj, nr_var] = size(data);
+
+switch cluster_version
+    case 1
+        for roi1 = 3:nr_var
+            
+            load(['Clustering_Results/Clustering_Results_with_' name_variables{roi1} '.mat'],'this_data','init_labels','label','model','llh','init_centres');
+            roi1_model=model;
+            roi1_label=label;
+            roi1_llh=llh;
+            roi1_thisdata=this_data;
+            roi1_init_centres=init_centres;
+            
+            roi1_patient_indx=find(roi1_label==1);
+            roi1_control_indx=find(roi1_label==2);
+            figure
+            
+            both_patient_indx=intersect(roi1_patient_indx,find(id_controls_csf == 0));
+            both_control_indx=intersect(roi1_control_indx,find(id_controls_csf == 1));
+            proi1_croi2_indx=setdiff(roi1_patient_indx,find(id_controls_csf == 0));
+            croi1_proi2_indx=setdiff(roi1_control_indx,find(id_controls_csf == 1));
+            
+            X=[length(both_patient_indx),length(both_control_indx),length(proi1_croi2_indx),length(croi1_proi2_indx)];
+            legends={'Both patient','Both control', 'roi1 patient roi2 control','roi1 control roi2 patient'};
+            pie(X,legends);
+            colormap jet
+            title(['Intersect ' name_variables{roi1} ' and the CSF controls'])
+            set(gcf, 'Color',[1 1 1]);
+            
+            
+            figure
+            both_patient_indx=intersect(roi1_patient_indx,find(id_controls_clin == 0));
+            both_control_indx=intersect(roi1_control_indx,find(id_controls_clin == 1));
+            proi1_croi2_indx=setdiff(roi1_patient_indx,find(id_controls_clin == 0));
+            croi1_proi2_indx=setdiff(roi1_control_indx,find(id_controls_clin == 1));
+            
+            X=[length(both_patient_indx),length(both_control_indx),length(proi1_croi2_indx),length(croi1_proi2_indx)];
+            legends={'Both patient','Both control', 'roi1 patient roi2 control','roi1 control roi2 patient'};
+            pie(X,legends);
+            colormap jet
+            title(['Intersect ' name_variables{roi1} ' and the Clinical controls'])
+            set(gcf, 'Color',[1 1 1]);
+            
+            
+            for roi2=3
+                
+                load(['Clustering_Results/Clustering_Results_with_' name_variables{roi2} '.mat'],'this_data','init_labels','label','model','llh','init_centres');
+                roi2_model=model;
+                roi2_label=label;
+                roi2_llh=llh;
+                roi2_thisdata=this_data;
+                roi2_init_centres=init_centres;
+                
+                roi2_patient_indx=find(roi2_label==1);
+                roi2_control_indx=find(roi2_label==2);
+                
+                %%  ==== PIE Chart Visualization intersection and difference of two clusters with two different rois
+                figure
+                both_patient_indx=intersect(roi1_patient_indx,roi2_patient_indx);
+                both_control_indx=intersect(roi1_control_indx,roi2_control_indx);
+                proi1_croi2_indx=setdiff(roi1_patient_indx,roi2_patient_indx);
+                croi1_proi2_indx=setdiff(roi1_control_indx,roi2_control_indx);
+                
+                X=[length(both_patient_indx),length(both_control_indx),length(proi1_croi2_indx),length(croi1_proi2_indx)];
+                legends={'Both patient','Both control', 'roi1 patient roi2 control','roi1 control roi2 patient'};
+                pie(X,legends);
+                colormap jet
+                title(['Intersect ' name_variables{roi1} ' and ' name_variables{roi2}])
+                set(gcf, 'Color',[1 1 1]);
+                %% ====== Individual visualization of biomarker data for two rois
+                figure
+                plot(roi1_thisdata(roi1_patient_indx),'rx');
+                hold on
+                plot(roi1_thisdata(roi1_control_indx),'gx');
+                plot(roi2_thisdata(roi2_patient_indx),'ro');
+                plot(roi2_thisdata(roi2_control_indx),'go');
+                title(['Intersect ' name_variables{roi1} ' and ' name_variables{roi2}])
+                %
+                pause
+                close all
+                set(gcf, 'Color',[1 1 1]);
+            end
+            
+        end
+        
+    case 2 %=========== Clutering using all of the data
+        
+        load('Clustering_Results/Clustering_Results_AllData.mat');
+        roi1_model=model;
+        roi1_label=label;
+        roi1_llh=llh;
+        roi1_init_centres=init_centres;
+        
+        roi1_patient_indx=find(roi1_label==1);
+        roi1_control_indx=find(roi1_label==2);
+        figure
+        
+        both_patient_indx=intersect(roi1_patient_indx,find(id_controls_csf == 0));
+        both_control_indx=intersect(roi1_control_indx,find(id_controls_csf == 1));
+        proi1_croi2_indx=setdiff(roi1_patient_indx,find(id_controls_csf == 0));
+        croi1_proi2_indx=setdiff(roi1_control_indx,find(id_controls_csf == 1));
+        
+        X=[length(both_patient_indx),length(both_control_indx),length(proi1_croi2_indx),length(croi1_proi2_indx)];
+        legends={'Both patient','Both control', 'roi1 patient roi2 control','roi1 control roi2 patient'};
+%         pie(X,legends);
+        pie(X);
+        colormap jet
+        title(['Intersect  Unsupervised clustering and the CSF controls'])
+        set(gcf, 'Color',[1 1 1]);
+        
+    case 3 %============= PCA clustering
+        
+        
+        load('Clustering_Results/PCA_Clustering_Results.mat');
+        roi1_model=model;
+        roi1_label=label;
+        roi1_llh=llh;
+        % noticed that in PCA clustering 1st component is controla nd
+        % the 2nd component is patient
+        roi1_patient_indx=find(roi1_label==2);
+        roi1_control_indx=find(roi1_label==1);
+        figure
+        
+        both_patient_indx=intersect(roi1_patient_indx,find(id_controls_csf == 0));
+        both_control_indx=intersect(roi1_control_indx,find(id_controls_csf == 1));
+        proi1_croi2_indx=setdiff(roi1_patient_indx,find(id_controls_csf == 0));
+        croi1_proi2_indx=setdiff(roi1_control_indx,find(id_controls_csf == 1));
+        
+        X=[length(both_patient_indx),length(both_control_indx),length(proi1_croi2_indx),length(croi1_proi2_indx)];
+        legends={'Both patient','Both control', 'PCA patient CSF control','PCA control CSF patient'};
+        pie(X,legends);
+        colormap jet
+        title(['Intersect PCA clustering and the CSF controls'])
+        set(gcf,'Color',[1 1 1]);
+        
+        
+        figure(2)
+        both_patient_indx=intersect(roi1_patient_indx,find(id_controls_clin == 0));
+        both_control_indx=intersect(roi1_control_indx,find(id_controls_clin == 1));
+        proi1_croi2_indx=setdiff(roi1_patient_indx,find(id_controls_clin == 0));
+        croi1_proi2_indx=setdiff(roi1_control_indx,find(id_controls_clin == 1));
+        
+        X=[length(both_patient_indx),length(both_control_indx),length(proi1_croi2_indx),length(croi1_proi2_indx)];
+        legends={'Both patient','Both control', 'PCA patient Clinical control','PCA control Clinical patient'};
+        pie(X,legends);
+        colormap jet
+        title(['Intersect PCA clustering and the clinical controls'])
+        set(gcf,'Color',[1 1 1]);
+        
+        
+    case 31
+        
+        load('Clustering_Results/PCA_Clustering_Results.mat');
+        roi1_model=model;
+        roi1_label=label;
+        roi1_llh=llh;
+        % noticed that in PCA clustering 1st component is controla nd
+        % the 2nd component is patient
+        roi1_patient_indx=find(roi1_label==2);
+        roi1_control_indx=find(roi1_label==1);
+        
+        
+        load('Clustering_Results/Clustering_Results_AllData.mat');
+        roi2_model=model;
+        roi2_label=label;
+        roi2_llh=llh;
+        roi2_init_centres=init_centres;
+        
+        roi2_patient_indx=find(roi2_label==1);
+        roi2_control_indx=find(roi2_label==2);
+        
+        figure
+        both_patient_indx=intersect(roi1_patient_indx,roi2_patient_indx);
+        both_control_indx=intersect(roi1_control_indx,roi2_control_indx);
+        proi1_croi2_indx=setdiff(roi1_patient_indx,roi2_patient_indx);
+        croi1_proi2_indx=setdiff(roi1_control_indx,roi2_control_indx);
+        
+        X=[length(both_patient_indx),length(both_control_indx),length(proi1_croi2_indx),length(croi1_proi2_indx)];
+        legends={'Both patient','Both control', 'roi1 patient roi2 control','roi1 control roi2 patient'};
+        pie(X,legends);
+        colormap jet
+        title(['Intersect PCA and ND ALL Data Clustering'])
+        
+        
+end

@@ -1,0 +1,17 @@
+function [trainingSet, imageIDTrain, name, des]dataSetsTrain(dataType)
+
+switch dataType
+    
+    case 1 % ====== data with ground truth illumination XM2VTS =========
+            libDir='C:\PhD Research\Code\Mosaicfaces\Standard Model\Mat data\';
+            load ([libDir 'patchTrainingSets8.mat'])
+            %Load the dataIDmatrix
+            sourceDir='C:\PhD Research\Data\'
+            load ([sourceDir 'enhancedSets.mat']);
+
+        
+    case 2 % Gabor filtered data with ground truth illumination XM2VTS
+        
+    case 3 % light data XM2VTS
+    
+    case 4 % Gabor filtered light data XM2VTS 

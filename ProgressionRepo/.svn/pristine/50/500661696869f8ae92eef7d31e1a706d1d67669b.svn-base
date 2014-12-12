@@ -1,0 +1,475 @@
+\documentclass[a4paper,12pt]{article}
+
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\setlength{\marginparwidth}{.7in}
+
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-2in}
+\setlength{\topmargin}{0in}
+
+\let\olddospecials=\dospecials
+\def\dospecials{\samepage \olddospecials}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{2ex}
+
+\newcounter{note}
+\newcommand{\note}[1]{\textbf{NOTE \thenote\addtocounter{note}1: #1}}
+
+\newcommand{\years}{\textrm{y}}
+\newcommand{\months}{\textrm{m}}
+
+\newcommand{\rmd}{\textrm{d}}
+
+\newcommand{\event}{E}
+%\newcommand{\set}[1]{\textsf{#1}}
+\newcommand{\set}[1]{#1}
+\newcommand{\group}{\set{G}}
+\newcommand{\normal}{\mathcal{N}}
+\newcommand{\uniform}{\mathcal{U}}
+
+\iffalse
+   $Id: PPD.tex,v 1.1 2004/11/26 09:41:04 ucacdxa Exp $
+\fi
+
+
+\begin{document}
+
+\title{Learning characteristic orders of events}
+
+\author{}
+
+\date{}
+
+\maketitle
+
+\begin{verbatim}
+$Revision: 1.73 $ $Date: 2010/05/10 17:37:42 $
+\end{verbatim}
+
+\section{Overview}
+
+The aim is to discover the most likely temporal order of events that
+occur during some process using a pool of measurements from different
+instances of the process.  The processes of primary interest here are
+the progressions of neurodegenerative diseases where important events
+include the onset of atrophy in different brain regions, which we can
+measure using imaging.  Different diseases have different
+characteristic progressions of atrophy around the brain.  Establishing
+the temporal progression has been a key challenge in imaging science
+for many years, because it aids diagnosis, staging and treatment
+planning.
+
+We consider two simple models:
+
+1. The \emph{sequential events model} imposes a strict ordering on the
+   events.  Suppose we have $N$ events $\event_1, \cdots, \event_N$.
+   The model orders the events
+   $\event_{k(1)}\prec\event_{k(2)}\prec\cdots\prec\event_{k(N)}$,
+   where $k(1), \cdots, k(N)$ are a permutation of the integers $1,
+   \cdots, N$ and $\event_i\prec\event_j$ denotes that event
+   $\event_i$ occurs before $\event_j$.
+
+2. The \emph{sequential groups model} divides the events into $M$
+   groups $\group_1, \cdots, \group_M$, where $\bigcup_{i=1}^M\group_i
+   = \{\event_j\}_{j=1}^N$ and $\group_i\cap\group_j = \emptyset$ if
+   $i\neq j$.  The groups have a strict ordering so that
+   $\event_i\prec\event{j}$ if and only if $k<l$ where
+   $\event_i\in\group_k$ and $\event_j\in\group_l$.
+
+Consider the simple example process of children growing up.  Here are
+some events that occur in most children's growing up process: 1. onset
+of puberty, 2. adult teeth arrive, 3. first word, 4. first kiss,
+5. 13th birthday, 6. first tooth, 7. first day at school.  Given dates
+of each event for a good number of children, the best fit sequential
+events model might order these events 6, 3, 7, 2, 1, 5, 4.  This
+ordering represents a most common ordering among the group of
+children, although clearly some variance occurs: some children will
+not hit puberty until after their 13th birthday for example, but most
+hit puberty before 13.  The sequential groups model is more flexible
+and allows for events to happen at around the same time, we might find
+groups $\{3, 6\}, \{2, 7\}, \{1, 4, 5\}$.
+
+Fitting either model requires
+\begin{itemize}
+
+\item a precedence matrix $P$ that contains the probability
+$p(\event_i\prec\event_j)$ that $\event_i$ preceeds $\event_j$ for each
+pair of events $\event_i$ and $\event_j$, and
+
+\item a procedure to find the sequence and groups that maximize the
+probability of whatever measurements we have from the process.
+
+\end{itemize}
+
+\section{Precedence Matrix}
+
+Several quite different data sets can provide an estimate of the
+precedence matrix.  With a bit of imagination, the events-in-childhood
+example can illustrate them all.
+
+\subsection{Direct Retrospective}
+
+The most informative data set comes from asking a sample of the adult
+(for whom all childhood events have occurred) population to list the
+order in which the events occurred for them.  Suppose we acquire such
+data from $K$ individuals.  A simple estimate of
+$p(\event_i\prec\event_j)$ comes directly from the proportion of the
+population for which event $\event_i$ occurred before event $\event_j$
+so that
+\begin{equation}\label{drpsum}
+p(\event_i\prec\event_j) = \frac{|\set{X}_{i\prec j}|}{K}
+\end{equation}
+where $\set{X}_{i\prec j}$ is the subset of the population that listed
+$\event_i$ before $\event_j$ and $|\set{X}|$ is the cardinality of set
+$\set{X}$.
+
+Now suppose each individual also provides dates for each event.  This
+information provides a more robust estimate of
+$p(\event_i\prec\event_j)$ such as
+\begin{equation}\label{drpweighted}
+p(\event_i\prec\event_j) = \frac{\sum_{x\in\set{X}_{ij}} (d_{xj} - d_{xi})}{\sum_{x\in\set{X}} |d_{xj} - d_{xi}|}
+\end{equation}
+where $\set{X}$ is the full set of all $K$ individuals and $d_{xi}$ is
+the date of event $\event_i$ for individual $x$.  Both estimates are
+nicely robust to missing data and the second to noisy estimates of the
+$d_{xi}$.  The second estimate should be more robust with small data
+sets, but may be more vulnerable to outliers, than the first.
+
+\subsection{Direct Snapshot}
+
+The second data set is less informative, but still provides estimates
+of $p(\event_i\prec\event_j)$.  Here we get only a snapshot from each
+subject, who is only part way through the sequence of events, ie all
+events may not have happened in each snapshot.  In our growing-up
+example, this might come from asking a set of children (or their
+parents) with a range of ages whether each of the events has or has
+not happened for them yet.
+
+With such a data set, we might estimate $p(\event_i\prec\event_j)$ by
+limiting attention only to the set $\set{X}_{i\oplus j}$ for which one or
+other of the two events has occurred, but not both.  Then we might
+estimate
+\begin{equation}\label{dspsum}
+p(\event_i\prec\event_j) = \frac{|\set{X}_{i\wedge \neg j}|}{|\set{X}_{i\oplus j}|}
+\end{equation}
+where $\set{X}_{i\wedge \neg j}$ is the set of individuals for which
+$\event_i$ has occured, but $\event_j$ has not.  In general, the set
+$\set{X}_{i\otimes j}$ refers to the set of individuals for which
+$\event_i\otimes \event_j$ is true, where $\otimes$ is some binary
+operator.  If, in addition, we have date information telling us how
+long ago each event that has happened occurred, we can incorporate
+it into the estimate to weight more heavily contributions from
+individuals showing greater times between the two events:
+\begin{equation}\label{dspweighted}
+p(\event_i\prec\event_j) = \frac{\sum_{\set{X}_{i\wedge \neg j}} (d_x - d_{xi})}{\sum_{\set{X}_{i\wedge \neg  j}} (d_x - d_{xi}) + \sum_{\set{X}_{j\wedge \neg  i}} (d_x - d_{xj})}
+\end{equation}
+where $d_x$ is the date of data collection from individual $x$.
+
+In the latter scenario, we can further incorporate information from
+individuals in the set $\set{X}_{i\wedge j}$ for whom both events
+$\event_i$ and $\event_j$ have occurred:
+\begin{equation}\label{dspinclusive}
+p(\event_i\prec\event_j) = \frac{\sum_{\set{X}_{i\wedge \neg  j}} (d_x - d_{xi}) + \sum_{\set{X}_{i\prec j}} (d_{xj} - d_{xi})}{\sum_{\set{X}_{i\wedge \neg  j}} (d_x - d_{xi}) + \sum_{\set{X}_{j\wedge \neg  i}} (d_x - d_{xj}) + \sum_{\set{X}_{i\wedge j}} |d_{xj} - d_{xi}| },
+\end{equation}
+where $\set{X}_{i\prec j}$ is now the set of individuals for which both
+events $\event_i$ and $\event_j$ have occurred and $\event_i$ occured
+before $\event_j$.
+Equation~\ref{dspinclusive} takes the simpler form
+\begin{equation}
+p(\event_i\prec\event_j) = \frac{\sum_{\set{X}_{i\prec j}} (d_{xj} - d_{xi})}{\sum_{\set{X}} |d_{xj} - d_{xi}| },
+\end{equation}
+if we set $d_{xi}$ equal for all events yet to happen and include
+$\set{X}_{i\wedge \neg j}$ in $\set{X}_{i\prec j}$.
+
+\note{The direct snapshot formulae are basically just the direct
+retrospective ones with missing data.}
+
+\subsection{Indirect snapshot}
+
+Finally, suppose that rather than direct information specifying
+occurrence of events, we have only measurements of some marker that we
+believe indicates occurrence of the event.  For example, suppose we
+cannot trust the answers that children give us about dates of events.
+Instead, we choose to use indirect measurements to indicate the
+likelihood that an event has already happened.  For example, we might
+use height measurements to indicate the onset of puberty.
+
+Now we need to construct a mapping that relates height to the
+probability that puberty has onset.  We might, for example, model the
+distribution of heights $H$ of pre and post-pubescent children,
+perhaps including age $A$ as a factor.  Given $p(H | A, \neg P)$,
+where $P$ is the event of puberty onset, and $p(H | A, P)$, we can
+estimate $p(P | H, A)$ using Bayes theorem and a simple prior for $p(P
+| A)$.
+
+Thus for each individual we obtain the probability that each event has
+occured.  We can combine these probabilities to obtain probabilities
+that pairs of events have occurred, eg $p(\event_i \wedge \event_j) =
+p(\event_i)p(\event_j)$ assuming the events are independent (is that
+reasonable??) and $p(\event_i \wedge \neg \event_j) = p(\event_i)(1 -
+p(\event_j))$.  We can use the pairwise event probabilities to
+estimate $p(\event_i\prec\event_j)$.  The probability $p(\event_i
+\wedge \neg \event_j)$ provides both a sensible weighting of the
+contribution of an individual's data to the estimate of
+$p(\event_i\prec\event_j)$ and a score to weight.  Thus we might
+estimate
+\begin{equation}
+p(\event_i\prec\event_j) = \frac{\sum_\set{X} p(\event_i \wedge \neg  \event_j)^2}{\sum_\set{X} p(\event_i \wedge \neg  \event_j)}.
+\end{equation}
+
+\note{may run into numerical problems with the above if all
+$p(\event_i \wedge \neg \event_j)$ are close to zero.}
+
+
+\note{the groups model also requires an estimate of
+$p(\event_i\sim\event_j)$ that events $\event_i$ and $\event_j$ occur at
+the same time.}  We might say
+\begin{equation}
+p(\event_i\sim\event_j) = (p(\event_i\prec \event_j)p(\event_j\prec \event_i))^{1/2}
+\end{equation}
+but need to take care that $p(\event_i\sim \event_j)$ can be greater
+than either $p(\event_i\prec \event_j)$ or $p(\event_j\prec \event_i)$
+in order to get model selection (ie number of groups) working.
+
+
+\section{Model Fitting}
+
+Given a precedence matrix $P$, we can evaluate the likelihood of
+candidate models, which provides an objective function for model
+fitting.  The simplest model fitting problem is to locate the maximum
+likelihood model, but we are also interested to sample from the
+posterior distribution on the model given the data.
+
+For the sequential events model, the likelihood of a
+candidate ordering
+$\event_{k(1)}\prec\event_{k(2)}\prec\cdots\prec\event_{k(N)}$ is
+\begin{equation}\label{seqmodlik}
+L(k) = \prod_{i=1}^{N-1}\left(\prod_{j=i+1}^N p(\event_{k(i)} \prec \event_{k(j)}) \right).
+\end{equation}
+
+We use a Markov-Chain Monte-Carlo (MCMC) algorithm to sample from the
+posterior distribution on the ordering.  The starting point $k_0$ is a
+random ordering of the events.  A perturbation $k'$ of the current model
+swaps the positions of two randomly chosen events.  The next step
+$k_1 = k'$ with probability $\min(a, 1)$ where $a = L(k')/L(k_0)$ is
+the likelihood ratio; otherwise $k_1 = k_0$.  Repeating the procedure
+provides the MCMC chain.
+
+For the sequential groups model with $M$ groups, $\group_1 \prec
+\group_2 \prec \cdots \prec \group_M$, the likelihood of a candidate
+group assignment is
+\begin{equation}\label{grpmodlik}
+L(G_1, \cdots, G_M) = \prod_{i=1}^{M-1} \left( \prod_{j=i+1}^M p(\group_i \prec \group_j) \right)p(G_i),
+\end{equation}
+where
+\begin{equation}
+p(\group_i \prec \group_j) = \prod_{k=1}^{|\group_i|} \prod_{l=1}^{|\group_j|} p(\group_{ik} \prec \group_{jl}),
+\end{equation}
+is the probability that all events $\group_{ik}$, $k = 1, \cdots,
+|\group_i|$, in $\group_i$ occur before all events in $\group_j$, and
+\begin{equation}
+p(\group_i) = \prod_{k=1}^{|\group_i|-1} \prod_{l=k+1}^{|\group_i|} p(\group_{ik}\sim \group_{il})
+\end{equation}
+is the probability that $\group_i$ is a genuine group, ie all events
+in $\group_i$ occur at the same time.  If the estimate of $p(\event_1
+\prec \event_2)$ in $P$ is independent of that of $p(\event_2 \prec
+\event_1)$, then a sensible estimate of $p(\group_{ik}\sim
+\group_{il})$ is
+\begin{equation}
+p(\group_{ik}\sim \group_{il}) = 1 - p(\group_{ik}\prec \group_{il}) - p(\group_{il}\prec \group_{ik})
+\end{equation}
+However, in many definitions of $P$, $p(\event_1 \prec \event_2) = 1 -
+p(\event_2 \prec \event_1)$, in which case, we might use
+\begin{equation}\label{simpleprobsim}
+p(\group_{ik}\sim \group_{il}) = (p(\group_{ik}\prec \group_{il})p(\group_{il}\prec \group_{ik}))^\frac12.
+\end{equation}
+The square root in equation~\ref{simpleprobsim} ensures that the
+product in equation~\ref{grpmodlik} always contains the same number of
+elements of $P$ regardless of the grouping so that neither large nor
+small groups are unfairly favoured.
+
+We can use a similar MCMC algorithm for sampling the posterior
+distribution on the group assignment for a fixed $M$.  The starting
+point is a random assignment of events to groups.  Perturbations move
+a randomly chosen event to a different randomly chosen group.
+
+An additional problem with the sequential groups model is to determine
+the number of groups.  Bayesian model selection offers a potential
+solution.  We can write the probability of $M$ groups given the data
+$D$ as
+\begin{equation}\label{grpmodsel}
+p(M | D) = \frac{p(D|M)p(M)}{\sum_{i=1}^Y p(D|i)p(i)}
+\end{equation}
+where we marginalize the group assignment $\hat{\group}$ to obtain
+\begin{equation}\label{assmarg}
+p(D|i) = \int p(D|i,\hat\group)p(\hat\group)\rmd\hat\group.
+\end{equation}
+We can evaluate equation~\ref{assmarg} by summing over the MCMC chain.
+The most likely number of groups is then the $M$ that maximizes
+$p(M|D)$.  Note that the denominator in equation~\ref{grpmodsel} is
+independent of $M$ and it is reasonable to choose $p(M)$ uniform.
+Thus we simply choose the $M$ that maximizes $p(D|M)$.
+
+The model selection above requires independent estimates of
+$p(\event_1 \prec \event_2)$ and $p(\event_2 \prec \event_1)$.
+Otherwise, if $p(\event_1 \prec \event_2) = 1 - p(\event_2 \prec
+\event_1)$, we find that
+\begin{equation}
+p(\event_1 \sim \event_2)^2 = p(\event_1 \prec \event_2)p(\event_2 \prec \event_1) \le \max(p(\event_1 \prec \event_2)^2, p(\event_2 \prec \event_1)^2),
+\end{equation}
+with equality occuring only when $p(\event_1 \prec
+\event_2)=p(\event_2 \prec \event_1)=0.5$.  Thus the model selection
+always favours larger $M$.  For the model selection to work properly,
+we need an independent estimate of $p(\event_1 \sim \event_2)$.
+
+
+\section{Experiments}
+
+\subsection{Growing up simulation}
+
+This section presents a simple simulation using childhood events as an
+illustrative example, as in the Methods section.  We estimate
+distributions of timings for each of the seven events and study the
+precedence matrix that we estimate using various data sets.
+
+We estimate the following distribution of ages for each event:
+
+\begin{enumerate}
+
+\item \emph{Onset of puberty.} The Wikipedia page on ``Puberty'' is a
+good source of data and references.  The typical age of onset is 10
+for girls and 12 for boys (Chumlea 1982), although the variance of
+normal onset is wide and the precise definition is not clear, as
+several stages occur for which typical onsets are as early as age 7.
+
+This simulation uses the age distribution $\normal(11\years, 1.5\years)$
+for event $\event_1$, which we truncate at a minimum age of $6\years$.
+
+\item \emph{Adult teeth arrive.} Adult teeth arrive fairly
+consistently around the age of 6 and variance appears fairly low from
+a trawl of child development websites.
+
+The simulation uses the age distribution $\normal(6\years, 6\months)$
+for event $\event_2$.
+
+\item \emph{First word.} Opinion of child development website varies
+somewhat on this, most likely because of the lack of a consistent
+definition of the first word; does simple repetition of the sound
+count, or does it require actual understanding of the meaning?  We'll
+take the first coherent utterance, which can occur as early as
+$4\months$, but typically between $10$ and $15\months$.
+
+The simulation uses the age distribution $\normal(13\months, 3\months)$
+truncated at a minimum of $4\months$ for event $\event_3$.
+
+\item \emph{First kiss.} Definitions are again a problem, but a trawl
+of teen-gossip sites suggests a fairly wide distribution with a
+typical age of around 13.
+
+The simulation uses the age distribution $\normal(13\years, 2\years)$
+truncated at a minimum of $5\years$ for event $\event_4$.
+
+\item \emph{13th birthday.} Minimal variance here!
+
+The simulation uses the age distribution $\delta(13\years)$ for event
+$\event_5$.
+
+\item \emph{First tooth.} Child-development sites suggest a fairly
+wide variance of the normal range with typical ages of $7\months$.
+
+The simulation uses the age distribution $\normal(7\months, 3\months)$
+truncated at a minimum of $1\months$ for event $\event_6$.
+
+\item \emph{First day at school.} In the UK, all children who will be
+5 before Augst 31st of the following year start primary school in
+September.  Thus on their first day, children's ages can range from
+$4\years$ and one day to exactly $5\years$.  The distribution of
+birthdays over the year is slightly non-uniform
+(\verb+www.panix.com/~murphy/bday.html+) but not by much.
+
+The simulation uses the age distribution $\uniform(4\years, 5\years)$
+for event $\event_7$.
+
+\end{enumerate}
+
+Figure \verb+GrowingUpDists.png+ shows histograms of 1000 samples
+drawn from the distributions on each event.  We assume independence of
+all events throughout this section.
+
+\subsubsection{Direct retrospective data set}
+
+The first data set provides direct retrospective dates for each event
+from 1000 individuals.  Estimates of the precedence matrix $P$ come
+directly from equations~\ref{drpsum} and~\ref{drpweighted}.  Figure
+\verb+GU_DirRetroPs+ shows $P$ estimates from each equation (left and
+right respectively) both from all 1000 data points and for
+successively smaller subsets.  The colour scale in the figure is hot
+to cold with dark red corresponding to a probability of 1 and dark
+blue to zero.
+
+We can consider the matrices in the top row as ground truth as $1000$
+samples is enough to get a good estimate of each probability.  The
+large-sample matrices from the two formulae show good consistency.  As
+we reduce the number of samples, the estimate from the direct sum in
+equation~\ref{drpsum} departs from the large sample estimate more
+rapidly than the estimate from the weighted sum in
+equation~\ref{drpweighted}.
+
+\subsubsection{Direct snapshot data set}
+
+The second data set contains just snap shots for each individual,
+which we construct by assigning a random age for each and keeping only
+dates in the first data set that are less than the age.  Estimates of
+$P$ come from equations~\ref{dspsum}, \ref{dspweighted},
+and~\ref{dspinclusive}.  Figure \verb+GU_DirSnapshotPs+ shows $P$
+estimates from each equation (left to right respectively) both from
+all 1000 data points and for successively smaller subsets.  The colour
+scale is as for the previous figure.
+
+Large numbers of subjects provide good agreement with the
+retrospective data.  The estimate that includes information about
+pairs of events that have already happened,
+equation~\ref{dspinclusive}, provides the most robust estimates as the
+number of samples reduces.
+
+\subsection{fAD data}
+
+The neurodegenerative disease data sets fall into the third category.
+Each image provides a snapshot of brain state and provides a
+measurement of the volume of each brain region of interest.  To
+estimate atrophy in each region requires two images: one baseline
+image acquired before disease onset and another acquired later.  The
+difference in regional volume between the two images provides a
+measure of atrophy.  Two possible ways to estimate the probability
+that atrophy has started in a particular region:
+
+\begin{itemize}
+
+\item Compare the normal volume of the region in a single image to the
+distribution of volumes in the normal population.  Usually, we would
+normalize volumes by overall brain size for better discrimination.
+
+\item See whether the atrophy rate from a pair of images is above a
+threshold possibly estimated from controls.
+
+\end{itemize}
+
+\note{Need to deal with the issue of imperfect baselines and discuss
+use of atrophy rate instead.}
+
+\subsection{Atrophy simulation}
+
+\section{Discussion and Further Work}
+
+\note{Beal and Gharamhani method might be useful for fitting mixtures of orderings, where assignment to a group is a hidden variable.}
+
+\subsection{Causality}
+
+
+\end{document}
+

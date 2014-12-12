@@ -1,0 +1,47 @@
+gmix_controls = gmm(1, 1, 'full');
+gmix_controls.centres = 0.95;
+gmix_controls.covars = 0.005;
+gmix_patients = gmm(1, 2, 'diag');
+gmix_patients.centres = [1 0.7]';
+gmix_patients.covars = [0.001 0.005]';
+gmix_patients.priors = [0.2 0.8];
+
+data_controls = gmmsamp(gmix_controls, 100);
+data_patients = gmmsamp(gmix_patients, 100);
+data_controls_enhanced = [data_controls; data_patients];
+p_controls = gmmactiv(gmix_controls, data_controls_enhanced);
+p_patients = gmmactiv(gmix_patients, data_patients);
+p_patients = p_patients(:, 2);
+[d, I_order_controls] = sort(data_controls_enhanced, 'ascend');
+[d, I_order_patients] = sort(data_patients, 'ascend');
+
+[n_c, x_c] = hist(data_controls, 30);
+[n_p, x_p] = hist(data_patients, 30);
+p_controls = p_controls*(max(n_c)/max(p_controls))*1.2;
+p_patients = p_patients*(max(n_p)/max(p_patients))*1.2;
+
+
+figure(1), clf
+hold on
+bar(x_c, n_c, 'g')
+bar(x_p, n_p, 'r')
+ax1 = gca;
+set(ax1, 'XColor', 'k', 'YColor', 'k')
+hXlabel1 = xlabel('Event measure');
+hYlabel1 = ylabel('frequency');
+h_pc = plot(data_controls_enhanced(I_order_controls), p_controls(I_order_controls), 'g');
+h_pp = plot(data_patients(I_order_patients), p_patients(I_order_patients), 'r');
+ax2 = axes('Position',get(ax1,'Position'),...
+    'XAxisLocation','top',...
+    'YAxisLocation','right',...
+    'Color','none',...
+    'XColor','k','YColor','k', ...
+    'YTick' , 0:5:15);
+hYlabel2 = ylabel('Likelihood');
+set([h_pc h_pp], ...
+    'LineWidth', 4);
+set([hXlabel1 hYlabel1 hYlabel2], ...
+    'FontSize'   , 12, ...
+    'FontName',  'Helvetica', ...
+    'FontWeight', 'Bold');
+

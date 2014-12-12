@@ -1,0 +1,101 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+\bibitem{braak1991neuropathological}
+Braak, H., Braak, E.: {Neuropathological stageing of Alzheimer-related
+  changes}. Acta neuropathologica  82(4),  239--259 (1991)
+
+\bibitem{carbone1971report}
+Carbone, P., Kaplan, H., Musshoff, K., Smithers, D., Tubiana, M.: {Report of
+  the committee on Hodgkin's disease staging classification}. Cancer research
+  31(11),  1860 (1971)
+
+\bibitem{dempster1977maximum}
+Dempster, A., Laird, N., Rubin, D., et~al.: {Maximum likelihood from incomplete
+  data via the EM algorithm}. Journal of the Royal Statistical Society. Series
+  B (Methodological)  39(1),  1--38 (1977)
+
+\bibitem{dickerson2009cortical}
+Dickerson, B., Bakkour, A., Salat, D., Feczko, E., Pacheco, J., Greve, D.,
+  Grodstein, F., Wright, C., Blacker, D., Rosas, H., et~al.: {The cortical
+  signature of Alzheimer's disease: regionally specific cortical thinning
+  relates to symptom severity in very mild to mild AD dementia and is
+  detectable in asymptomatic amyloid-positive individuals}. Cerebral Cortex
+  19(3),  497 (2009)
+
+\bibitem{fischl2002whole}
+Fischl, B., Salat, D., Busa, E., Albert, M., Dieterich, M., Haselgrove, C.,
+  van~der Kouwe, A., Killiany, R., Kennedy, D., Klaveness, S., et~al.: {Whole
+  Brain Segmentation:: Automated Labeling of Neuroanatomical Structures in the
+  Human Brain}. Neuron  33(3),  341--355 (2002)
+
+\bibitem{fischl2004automatically}
+Fischl, B., Van Der~Kouwe, A., Destrieux, C., Halgren, E., Segonne, F., Salat,
+  D., Busa, E., Seidman, L., Goldstein, J., Kennedy, D., et~al.: {Automatically
+  parcellating the human cerebral cortex}. Cerebral Cortex  14(1), ~11 (2004)
+
+\bibitem{folstein1975mini}
+Folstein, M., Folstein, S., McHugh, P.: {Mini-mental state. A practical method
+  for grading the cognitive state of patients for the clinician.} Journal of
+  psychiatric research  12(3),  189 (1975)
+
+\bibitem{freeborough1998modeling}
+Freeborough, P., Fox, N.: {Modeling brain deformations in Alzheimer disease by
+  fluid registration of serial 3D MR images}. Journal of Computer Assisted
+  Tomography  22(5),  838 (1998)
+
+\bibitem{gilks1996markov}
+Gilks, W., Gilks, W., Richardson, S., Spiegelhalter, D.: {Markov chain Monte
+  Carlo in practice}. Chapman \& Hall/CRC (1996)
+
+\bibitem{mannila2000global}
+Mannila, H., Meek, C.: {Global partial orders from sequential data}. In:
+  Proceedings of the sixth ACM SIGKDD international conference on Knowledge
+  discovery and data mining. p. 168. ACM (2000)
+
+\bibitem{mclachlan2000finite}
+McLachlan, G., Peel, D.: {Finite mixture models}. Wiley-Interscience (2000)
+
+\bibitem{modat2010fast}
+Modat, M., Ridgway, G., Taylor, Z., Lehmann, M., Barnes, J., Hawkes, D., Fox,
+  N., Ourselin, S.: {Fast free-form deformation using graphics processing
+  units}. Computer methods and programs in biomedicine  98(3),  278--284 (2010)
+
+\bibitem{mueller2005ways}
+Mueller, S., Weiner, M., Thal, L., Petersen, R., Jack, C., Jagust, W.,
+  Trojanowski, J., Toga, A., Beckett, L.: {Ways toward an early diagnosis in
+  Alzheimer's disease: the Alzheimer's Disease Neuroimaging Initiative (ADNI)}.
+  Alzheimer's and Dementia: The Journal of the Alzheimer's Association  1(1),
+  55--66 (2005)
+
+\bibitem{puolamäki2006seriation}
+Puolamaki, K., Fortelius, M., Mannila, H.: {Seriation in paleontological data
+  using Markov chain Monte Carlo methods}. PLoS Computational Biology  2(2),
+  ~e6 (2006)
+
+\bibitem{ridha2006tracking}
+Ridha, B., Barnes, J., Bartlett, J., Godbolt, A., Pepple, T., Rossor, M., Fox,
+  N.: {Tracking atrophy progression in familial Alzheimer's disease: a serial
+  MRI study}. The Lancet Neurology  5(10),  828--834 (2006)
+
+\bibitem{scahill2002mapping}
+Scahill, R., Schott, J., Stevens, J., Rossor, M., Fox, N.: {Mapping the
+  evolution of regional atrophy in Alzheimer's disease: unbiased analysis of
+  fluid-registered serial MRI}. Proceedings of the National Academy of Sciences
+  of the United States of America  99(7),  4703 (2002)
+
+\bibitem{tabrizi2009biological}
+Tabrizi, S., Langbehn, D., Leavitt, B., Roos, R., Durr, A., Craufurd, D.,
+  Kennard, C., Hicks, S., Fox, N., Scahill, R., et~al.: {Biological and
+  clinical manifestations of Huntington's disease in the longitudinal TRACK-HD
+  study: cross-sectional analysis of baseline data}. The Lancet Neurology
+  8(9),  791--801 (2009)
+
+\bibitem{thompson2001cortical}
+Thompson, P., Mega, M., Woods, R., Zoumalan, C., Lindshield, C., Blanton, R.,
+  Moussai, J., Holmes, C., Cummings, J., Toga, A.: {Cortical change in
+  Alzheimer's disease detected with a disease-specific population-based brain
+  atlas}. Cerebral Cortex  11(1), ~1 (2001)
+
+\end{thebibliography}

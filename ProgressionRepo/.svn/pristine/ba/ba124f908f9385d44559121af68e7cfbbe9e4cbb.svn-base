@@ -1,0 +1,53 @@
+% Copied from Kopka and Daly page 344.
+% This allows documents to use the full extent of the page with only
+% 1in or 1.5cm margins.
+%
+% $Id: fullpage.sty,v 1.1 2007/09/06 08:51:59 ucacdxa Exp $
+
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fullpage2}
+\RequirePackage{ifthen}
+
+\newlength{\FP@margin}
+\DeclareOption{in}{\setlength{\FP@margin}{1in}}
+\DeclareOption{cm}{\setlength{\FP@margin}{2cm}}
+
+\newboolean{FP@plain}
+\newboolean{FP@empty}
+\DeclareOption{plain}{\setboolean{FP@plain}{true}
+                      \setboolean{FP@empty}{false}
+                      \pagestyle{plain}}
+\DeclareOption{empty}{\setboolean{FP@plain}{true}
+                      \setboolean{FP@empty}{true}
+                      \pagestyle{empty}}
+\DeclareOption{headings}{\setboolean{FP@plain}{false}
+                         \setboolean{FP@empty}{false}
+                         \pagestyle{headings}}
+\DeclareOption{myheadings}{\setboolean{FP@plain}{false}
+                           \setboolean{FP@empty}{false}
+                           \pagestyle{myheadings}}
+
+\ExecuteOptions{in,plain}
+\ProcessOptions*
+
+\ifthenelse{\boolean{FP@plain}}
+   {\setlength{\headheight}{0pt}
+    \setlength{\headsep}{0pt}}{}
+\ifthenelse{\boolean{FP@empty}}
+   {\setlength{\footskip}{0pt}}{}
+
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2\FP@margin}
+\setlength{\oddsidemargin}{\FP@margin}
+\addtolength{\oddsidemargin}{-1in}
+\setlength{\evensidemargin}{\oddsidemargin}
+
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-\headheight}
+\addtolength{\textheight}{-\headsep}
+\addtolength{\textheight}{-\footskip}
+\addtolength{\textheight}{-2\FP@margin}
+\setlength{\topmargin}{\FP@margin}
+\addtolength{\topmargin}{-1in}
+
