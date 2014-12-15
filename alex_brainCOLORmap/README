@@ -32,3 +32,5 @@ of similar colors in a color space:
    The program recolor_eps.[csh,py] takes the output XML to recolor EPS files.
 
 (c) Copyright 2010 . arno klein . arno@binarybottle.com . MIT license
+
+python recolor_eps_raz.py --mapFile input/labels_raz.xml input/images/Mid-Lateral_surface3_prepared.eps output/alex_images/parahippo_red.eps

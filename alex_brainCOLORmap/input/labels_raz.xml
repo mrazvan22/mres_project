@@ -453,12 +453,12 @@
 <Label>
   <Name>Right SFG   superior frontal gyrus</Name>
   <Number>190</Number>
-  <RGBColor>255 0 0</RGBColor>
+  <RGBColor>255 218 185</RGBColor>
 </Label>
 <Label>
   <Name>Left SFG   superior frontal gyrus</Name>
   <Number>191</Number>
-  <RGBColor>255 0 0</RGBColor>
+  <RGBColor>255 218 185</RGBColor>
 </Label>
 <Label>
   <Name>Right SMC   supplementary motor cortex</Name>

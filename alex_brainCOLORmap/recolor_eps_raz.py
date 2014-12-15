@@ -121,8 +121,9 @@ labelColors = [ ]
 red = '255 0 0'
 green = '0 255 0'
 
+abnormal_order = [170, 171, 132, 133, 154, 155, 106, 107, 200, 201, 144, 145, 122, 123, 180, 181, 202, 203, 152, 153, 118, 119, 172, 173, 166, 167, 190, 191, 160, 161, 128, 129, 168, 169, 142, 143, 198, 199, 195, 196, 184, 185]
 #redNums = [170, 171]
-redNums = [170, 171]
+redNums = abnormal_order
 
 if os.access(options.mapFileName,os.F_OK): # then file exists
 	# Read color map file
