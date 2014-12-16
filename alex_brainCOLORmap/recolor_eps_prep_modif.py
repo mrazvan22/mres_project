@@ -118,15 +118,6 @@ labelList = [ ]
 labelNums = [ ]
 labelColors = [ ]
 
-red = '255 0 0'
-green = '0 255 0'
-gray = '128 128 128'
-
-# stages 6,12,18,24,36
-abnormal_order = [170, 171, 132, 133, 154, 155, 106, 107, 200, 201, 144, 145, 122, 123, 180, 181, 202, 203, 152, 153, 118, 119, 172, 173, 166, 167, 190, 191, 160, 161, 128, 129, 168, 169, 142, 143, 198, 199, 195, 196, 184, 185]
-stageIndexEBM = [0] + [abnormal_order.index(x) + 1 for x in [133, 133, 181, 169 ]]
-redNums = abnormal_order
-
 if os.access(options.mapFileName,os.F_OK): # then file exists
 	# Read color map file
 	xmldoc = minidom.parse(options.mapFileName)
@@ -142,62 +133,156 @@ if os.access(options.mapFileName,os.F_OK): # then file exists
 		color = t[0] + ' ' + t[1] + ' ' + t[2]
 		labelColors.append(color)
 
-	for ii in range(len(labelList)):
-		name = labelList[ii]
-		color = labelColors[ii]
-		print '\'' + color + '\' \'' + name + '\''
+	#for ii in range(len(labelList)):
+	#	name = labelList[ii]
+	#	color = labelColors[ii]
+	#	print '\'' + color + '\' \'' + name + '\''
 
-#
-labelColors = []
-for labelNum in labelNums:
-  if labelNum in redNums:
-    labelColors.append(red)
-  else:
-    labelColors.append(green)
-    
-
-#
 
 # --------------------------------------------------------------------
 #
-print "\nColoring file \"%s\" ...\n" % inFileName
+if options.doPrepare:
+	# run eps2eps on the input file:
+	cruftlessFile = "nocruft." + inFileName
+	print "\nPreparing file \"%s\" ...\n" % inFileName
+	s = 'eps2eps %s %s' % (inFileName, cruftlessFile)
+	if options.verbose:
+		print s
+	os.system(s)
 
-# Read input file and write ouput, changing the colors after
-#  finding '% recoloreps LABELSTRING' comments
-ff = open(inFileName,'r')
-contents = ff.read()
-ff.close()
-contentLines = contents.split('\n')
+	# read the resulting cruftless input file:
+	ff = open(cruftlessFile,'r')
+	contents = ff.read()
+	ff.close()
+	count = contents.count(" rG\n")
+	if options.verbose:
+		print "Found %d colored items" % count
+	contentLines = contents.split('\n')
 
-# open output file for writing
-of = open(outFileName,'w')
+	if options.overrideCount != 0:
+		count = options.overrideCount
+	regionNameList = [ ]
+	for ii in range(count):
+		# open temporary file for writing
+		tempFileName = outFileName.replace('.eps','_'+str(ii)+'.eps')
+		tf = open(tempFileName,'w')
+		foundCount = 0
+		for line in contentLines:
+		        h = re.compile('.* rG$')
+		        hS = h.search(line)
+			# if this is a color line
+			#print line
+		        if hS:
+				#print "ii= ", ii, ' found line: ', line
+				# if this is the color to change change it
+				if foundCount == ii:
+					s = options.findMeColor + ' rG\n'
+					#print 'changed color: ', s
+					tf.write(s)
+				else: # not THE color, print it out
+					tf.write(line+'\n')
+				foundCount = foundCount + 1
+			else: # something other than color, print it out
+				tf.write(line+'\n')
+		tf.close()
+		s = 'open ' + tempFileName
+		os.system(s)
 
-skipNextLine = False
-for line in contentLines:
-  if skipNextLine == False:
-    h = re.compile('% recoloreps .*')
-    hS = h.search(line)
-    if hS: # if this is a color comment line
-      print 'Found color comment: ', line
-      of.write(line+'\n')
-      toFind = line[13:]
-      if toFind in labelList:
-        print 'looking for color for ', toFind
-        index = labelList.index(toFind)
-        print 'index is ', index
-        color = labelColors[index]
-        print 'writing color: ', color
-        of.write(color+' rG\n')
-        skipNextLine = True
-      else:
-        print toFind + ' is not in labelList\n'
-    else: # something other than color, print it out
-      of.write(line+'\n')
-  else:
-    print 'skipped actual color line\n'
-    skipNextLine = False
+		go = True
+    i = 0
+		while go: # then a label file was read
+			#thisName = raw_input("Enter label for region: ")
+			thisName = labelList[i]
+      i = i + 1
+			if options.verbose:
+				print "You said, ", thisName
+			pickList = [ ]
+			print "   0) (re-enter text) "
+			print "   1) %s" % thisName
+			pickList.append(thisName)
+			pickNum=2
+			if len(labelList)>0: 
+				for label in labelList:
+	        			h = re.compile('.* '+thisName+' .*')
+	        			hS = h.search(label)
+	        			if hS: # if this is a color comment line
+						print "   %d) %s" % \
+							(pickNum, label)
+						pickList.append(label)
+						pickNum = pickNum + 1
+			#choice = raw_input("Which one do you want to use?  ")
+			choice = "1"
+			theChoice = int(choice)
+			if theChoice == 0:
+				go = True # stay in while loop
+			else:
+				go = False # drop out
+				thisName = pickList[theChoice-1]
+		print "Using: \"%s\"" % thisName
+		regionNameList.append(thisName)
 
-of.close()
+	# open output file for writing
+	of = open(outFileName,'w')
+
+	# Now print out the new file with the names as comments
+	foundCount = 0
+	for line in contentLines:
+	        h = re.compile('.* rG$')
+	        hS = h.search(line)
+	        if hS: # if this is a color line
+			if foundCount < count:
+				s = '% recoloreps ' \
+			   	+ regionNameList[foundCount]+'\n'
+				of.write(s)
+				foundCount = foundCount + 1
+			of.write(line+'\n')
+		else: # something other than color, print it out
+			of.write(line+'\n')
+
+	of.close()
+
+
+# --------------------------------------------------------------------
+#
+else:
+	print "\nColoring file \"%s\" ...\n" % inFileName
+
+	# Read input file and write ouput, changing the colors after
+	#  finding '% recoloreps LABELSTRING' comments
+	ff = open(inFileName,'r')
+	contents = ff.read()
+	ff.close()
+	contentLines = contents.split('\n')
+
+	# open output file for writing
+	of = open(outFileName,'w')
+
+	skipNextLine = False
+	for line in contentLines:
+		if skipNextLine == False:
+	        	h = re.compile('% recoloreps .*')
+	        	hS = h.search(line)
+	        	if hS: # if this is a color comment line
+				print 'Found color comment: ', line
+				of.write(line+'\n')
+				toFind = line[13:]
+				if toFind in labelList:
+					print 'looking for color for ', toFind
+					index = labelList.index(toFind)
+					print 'index is ', index
+					color = labelColors[index]
+					print 'writing color: ', color
+					of.write(color+' rG\n')
+					skipNextLine = True
+				else:
+					print toFind + ' is not in labelList\n'
+			else: # something other than color, print it out
+				of.write(line+'\n')
+		else:
+			print 'skipped actual color line\n'
+			skipNextLine = False
+
+	of.close()
 
 # --------------------------------------------------------------------
 #
