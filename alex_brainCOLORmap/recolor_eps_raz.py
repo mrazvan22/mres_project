@@ -23,6 +23,7 @@ import array
 import math
 import glob
 import datetime
+import numpy as np
 from optparse import OptionParser
 from xml.dom import minidom
 
@@ -50,13 +51,18 @@ parser.add_option("-m", "--mapFile",
                   default='parcLabels.xml',
                   help="Name to color mapping file "
                        "[default: %default]")
+parser.add_option("-d", "--csvFile",
+                  action="store", type="string", dest="csvFileName",
+                  default='GMM_matrix.csv',
+                  help="Name to CSV matrix file of the variance for EBM, GMM or the 3 cluster matrices for Dirichet processes"
+                       "[default: %default]")
 parser.add_option("-o", "--overrideCount",
                   action="store", type="int", dest="overrideCount",
                   default='0',
                   help="Override number of colors found (for testing) "
                        "[default: %default]")
 
-parser.add_option("-v", action="store_true", dest="verbose", default=True,
+parser.add_option("-v", action="store_true", dest="verbose", default=False,
                   help="say what is going on "
                   "[default: %default]")
 parser.add_option("-q", action="store_false", dest="verbose",
@@ -116,16 +122,34 @@ if options.verbose:
 
 labelList = [ ]
 labelNums = [ ]
-labelColors = [ ]
 
-red = '255 0 0'
-green = '0 255 0'
-gray = '128 128 128'
+#RED = (255, 0, 0)
+#YELLOW = (255 255 0)
+GRAY = '128 128 128'
+
 
 # stages 6,12,18,24,36
-abnormal_order = [170, 171, 132, 133, 154, 155, 106, 107, 200, 201, 144, 145, 122, 123, 180, 181, 202, 203, 152, 153, 118, 119, 172, 173, 166, 167, 190, 191, 160, 161, 128, 129, 168, 169, 142, 143, 198, 199, 195, 196, 184, 185]
-stageIndexEBM = [0] + [abnormal_order.index(x) + 1 for x in [133, 133, 181, 169 ]]
-redNums = abnormal_order
+ABNORMAL_ORDER = [170, 171, 132, 133, 154, 155, 106, 107, 200, 201, 144, 145, 122, 123, 180, 181, 202, 203, 152, 153, 102, 103, 118, 119, 172, 173, 166, 167, 190, 191, 160, 161, 128, 129, 168, 169, 142, 143, 198, 199, 195, 196, 184, 185]
+stageIndexAbnormal = [0] + [ABNORMAL_ORDER.index(x) + 1 for x in [133, 133, 181, 169 ]]
+STAGE_NR_LABELS = [6,12,18,24,36]
+
+# stage values start from 0: ABETA142 = 0, PTAU181P = 1, TAU = 2, ..
+NUMS_TO_EVENT = {170:6, 171:6, 132:11, 133:11, 154:18, 155:18, 106:19, 107:19, 200:20, 201:20, 144:21, 145:21, 122:22, 123:22, 180:23, 181:23, 202:24, 203:24, 152:26, 153:26, 102:27, 103:27, 118:28, 119:28, 172:30, 173:30, 166:31, 167:31, 190:32, 191:32, 160:33, 161:33, 128:34, 129:34, 168:35, 169:35, 142:36, 143:36, 198:37, 199:37, 195:39, 196:39, 184:40, 185:40}
+
+
+CSV_MATRICES = ['EBM_matrix.csv', 'GMM_matrix.csv', 'cluster1_matrix.csv', 'cluster2_matrix.csv', 'cluster3_matrix.csv']
+OUT_FOLDERS = [ "ordering_figures_final/images/%s" % x.split("_")[0] for x in CSV_MATRICES]
+
+def getInterpolatedColor(abn_level):
+  # abn_level = 0 -> yellow
+  # abn_level = 1 -> red
+  print "abn_level: %f" % abn_level
+  x = int((1-abn_level)*255)
+  print "x:%f" % x 
+  return "255 %d 0" % x
+
+
+NR_STAGES = len(stageIndexAbnormal)
 
 if os.access(options.mapFileName,os.F_OK): # then file exists
 	# Read color map file
@@ -137,67 +161,76 @@ if os.access(options.mapFileName,os.F_OK): # then file exists
 		uNumber = xmlLabel.getElementsByTagName("Number")
 		number = int(uNumber[0].firstChild.data)
 		labelNums.append(number)
-		uColor = xmlLabel.getElementsByTagName("RGBColor")
-		t = uColor[0].firstChild.data.split()
-		color = t[0] + ' ' + t[1] + ' ' + t[2]
-		labelColors.append(color)
 
-	for ii in range(len(labelList)):
-		name = labelList[ii]
-		color = labelColors[ii]
-		print '\'' + color + '\' \'' + name + '\''
+#for matrixName,outFolder in zip([CSV_MATRICES[0]], [OUT_FOLDERS[0]]):
+for matrixName,outFolder in zip(CSV_MATRICES, OUT_FOLDERS):
+  matrix = np.loadtxt(open(matrixName,"rb"),delimiter=",")
+  for stageIndex in range(NR_STAGES):
 
-#
-labelColors = []
-for labelNum in labelNums:
-  if labelNum in redNums:
-    labelColors.append(red)
-  else:
-    labelColors.append(green)
+    #print matrix
+    # for each event get the sum of all the probabilities until the current stage
+    eventsAbnormality = np.sum(matrix[:,:STAGE_NR_LABELS[stageIndex]],1)
+    print eventsAbnormality
     
 
-#
-
-# --------------------------------------------------------------------
-#
-print "\nColoring file \"%s\" ...\n" % inFileName
-
-# Read input file and write ouput, changing the colors after
-#  finding '% recoloreps LABELSTRING' comments
-ff = open(inFileName,'r')
-contents = ff.read()
-ff.close()
-contentLines = contents.split('\n')
-
-# open output file for writing
-of = open(outFileName,'w')
-
-skipNextLine = False
-for line in contentLines:
-  if skipNextLine == False:
-    h = re.compile('% recoloreps .*')
-    hS = h.search(line)
-    if hS: # if this is a color comment line
-      print 'Found color comment: ', line
-      of.write(line+'\n')
-      toFind = line[13:]
-      if toFind in labelList:
-        print 'looking for color for ', toFind
-        index = labelList.index(toFind)
-        print 'index is ', index
-        color = labelColors[index]
-        print 'writing color: ', color
-        of.write(color+' rG\n')
-        skipNextLine = True
+    labelColors = []
+    redNums = ABNORMAL_ORDER[:stageIndexAbnormal[stageIndex]]
+    yellowNums = set(ABNORMAL_ORDER) - set(redNums)
+    for labelNum in labelNums:
+      if labelNum in ABNORMAL_ORDER:
+        color = getInterpolatedColor(eventsAbnormality[NUMS_TO_EVENT[labelNum]])
+        print color
+        labelColors.append(color)
       else:
-        print toFind + ' is not in labelList\n'
-    else: # something other than color, print it out
-      of.write(line+'\n')
-  else:
-    print 'skipped actual color line\n'
-    skipNextLine = False
+        labelColors.append(GRAY)
+        
+    print "\nColoring file %s using matrix %s, stage %d ..." % (inFileName, matrixName, stageIndex)
 
-of.close()
+    # Read input file and write ouput, changing the colors after
+    #  finding '% recoloreps LABELSTRING' comments
+    ff = open(inFileName,'r')
+    contents = ff.read()
+    ff.close()
+    contentLines = contents.split('\n')
+
+    # open output file for writing
+    newOutFileName = "%s/stage_%d.eps" % (outFolder, STAGE_NR_LABELS[stageIndex])
+    print newOutFileName
+    of = open(newOutFileName,'w')
+    #of = open(os.devnull,'w')
+
+    skipNextLine = False
+    for line in contentLines:
+      if skipNextLine == False:
+        h = re.compile('% recoloreps .*')
+        hS = h.search(line)
+        if hS: # if this is a color comment line
+          if options.verbose:
+            print 'Found color comment: ', line
+          of.write(line+'\n')
+          toFind = line[13:]
+          if toFind in labelList:
+            if options.verbose:
+              print 'looking for color for ', toFind
+            index = labelList.index(toFind)
+            if options.verbose:
+              print 'index is ', index
+            color = labelColors[index]
+            if options.verbose:
+              print 'writing color: ', color
+            of.write(color+' rG\n')
+            skipNextLine = True
+          else:
+            if options.verbose:
+              print toFind + ' is not in labelList\n'
+        else: # something other than color, print it out
+          of.write(line+'\n')
+      else:
+        if options.verbose:
+          print 'skipped actual color line\n'
+        skipNextLine = False
+
+    of.close()
 
 # --------------------------------------------------------------------
 #
