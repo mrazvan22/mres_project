@@ -1,0 +1,9 @@
+tasks to add:
+0. data collection 
+meat tasks:
+1. differential diagnosis of PCA EBM vs AD EBM
+2. simultaneous MCMC sampling of both biomarket distribution parameters and event sequence
+
+add methodology section, 
+
+project aims : super short, PCA
