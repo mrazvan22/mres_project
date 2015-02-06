@@ -2,4 +2,8 @@
 *.swp
 *~
 *.aux
+alex_brainCOLORmap/*
+alex_brainCOLORmap.tar.gz
+alex_brainCOLORmap/recolor_eps_raz.py
+
 
