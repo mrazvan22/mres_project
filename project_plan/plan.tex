@@ -1,0 +1,141 @@
+\documentclass[11pt,a4paper,oneside]{report}
+
+
+\usepackage{amsmath,amssymb,calc,ifthen}
+
+\usepackage{float}
+%\usepackage{cancel}
+
+\usepackage[table,usenames,dvipsnames]{xcolor} % for coloured cells in tables
+
+\usepackage{tikz}
+
+% Allows us to click on links and references!
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+% Nice package for plotting graphs
+% See excellent guide:
+% http://www.tug.org/TUGboat/tb31-1/tb97wright-pgfplots.pdf
+\usetikzlibrary{plotmarks}
+\usepackage{amsmath,graphicx}
+\usepackage{epstopdf}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% highlight - useful for TODOs and similar
+\usepackage{color}
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+
+\newcommand\ci{\perp\!\!\!\perp} % perpendicular sign
+\newcommand*\rfrac[2]{{}^{#1}\!/_{#2}} % diagonal fraction
+
+\usepackage{listings}
+
+
+
+% margin size
+\usepackage[margin=1in]{geometry}
+
+\tikzstyle{state}=[circle,thick,draw=black, align=center, minimum size=2.1cm,
+inner sep=0]
+\tikzstyle{vertex}=[circle,thick,draw=black]
+\tikzstyle{terminal}=[rectangle,thick,draw=black]
+\tikzstyle{edge} = [draw,thick]
+\tikzstyle{lo} = [edge,dotted]
+\tikzstyle{hi} = [edge]
+\tikzstyle{trans} = [edge,->]
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add 
+%\usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the 
+%code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen 
+%at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the 
+%given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 
+%8-bits encodings only, does not work with UTF-8
+  frame=single,                    % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping 
+%indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=Octave,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible 
+%values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed 
+%on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular 
+%underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular 
+%underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 
+%1, each line will be numbered
+  stringstyle=\color{mymauve},     % string literal style
+  tabsize=2,                       % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with 
+%\lstinputlisting; also try caption instead of title
+}
+
+
+\begin{document}
+\belowdisplayskip=12pt plus 3pt minus 9pt
+\belowdisplayshortskip=7pt plus 3pt minus 4pt
+
+\section*{List of tasks}
+
+\renewcommand\arraystretch{4.4} %\setlength\minrowclearance{2.4pt}
+
+\begin{tabular}{ l | c }
+ Task & Deadline\\
+ \hline
+ Investigate data and read literature & 4 April\\
+ Implement basic EBM, MCMC sampler & 17 April\\
+ Positional variance matrices and EBM stage histograms for different groups & 30 April\\
+ Analyse follow-up data, compute prob of remaining CN, MCI over time & 7 May\\
+ Calculate cut points, sensitivity and specificity & 14 May\\
+ Temporal diagram hilighting the order in which areas of brain get affected by PCA & 21 May\\
+ (maybe, if relevant) Comparison of event sequences across left-right hemispheres? & 30 May\\
+ ... & ...\\
+ Validation of the results, comparison with other methods & 20 July\\
+ Write the Mres project report & 14 August
+ 
+ 
+\end{tabular}
+
+
+\section*{Aims of the project}
+
+Dementia and other related neurodegenerative disorders cost the UK approximatelly £26 billion a year. Developing a clear understanding of how thse disorders operate and progress over time could help us find more effective treatment. This project is investigating the progression of Posterior Cortical Atrophy (PCA), which is an early onset variant of Alzheimer's disease that  causes atropy of the posterior part of the cerebral cortex, resulting in disruption of the visual system. 
+
+We are planning on modelling PCA using an \textit{event-based model} (EBM), which models the progression of the disease as a sequence of events. Such events could be: (1) a new area of the brain got affected, (2) the patient shows a drop in cognitive test scores. These events are informed by measurements of biomarkers in the patient (Abeta, P-tau, T-tau). The EBM can calculate the most common progression of the events in the patient cohort and can be used to classify individual patients into the three main groups: cognitively normal, mild cognitive impairment and Alzheimer's disease. The EBM can also be used for longitudinal studies; for instance, it can stage patients after a predefined follow-up period.
+
+The EBM has already been used to study familiar and sporadic Alzheimer's disease and Huntington's disease, and this project aims to apply these techniques in the study of PCA. If time permits, we can also investigate possible extensions to the EBM, such as allowing for multiple progression sequences (Alex, IPMI).
+
+\section*{Summary of progress to date}
+
+I have so far experimented with the EBM by trying to reproduce some of the results of A. Young, 2012. We cannot start writing the EBM for the PCA yet, as we are still waiting to receive the dataset from the Dementia Research Center.
+
+
+\end{document}
