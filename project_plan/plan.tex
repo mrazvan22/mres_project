@@ -122,6 +122,8 @@ inner sep=0]
 
 \textsc{\Large MRes Project Plan}\\[0.5cm]
 
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
 % Title
 \HRule \\[0.4cm]
 { \Large Differential Diagnosis of Alzheimer subtypes through disease progression modelling \\[0.4cm] }
@@ -160,16 +162,20 @@ EPSRC Centre for Doctoral Training in Medical Imaging\\ University College Londo
 \section*{Aims of the project}
 % keep very short, just implementing an EBM model of PCA
 
-We are planning on modelling PCA using an \textit{event-based model} (EBM), which models the progression of the disease as a sequence of events, where each event corresponds to a biomarker becoming abnormal. Such events could be: (1) a new area of the brain got affected, (2) the patient shows a drop in cognitive test scores. The EBM can calculate the most common progression of the events in the patient cohort and can be used to classify individual patients into the three main groups: cognitively normal, mild cognitive impairment and Alzheimer's disease. The EBM can also be used for longitudinal studies; for instance, it can stage patients after a predefined follow-up period.
+We are planning on modelling PCA using an \textit{event-based model} (EBM), which models the progression of the disease as a sequence of events, where each event corresponds to a biomarker becoming abnormal. The biomarker dataset is multimodal and includes mreasurements of atrophy rates of cortical volumes, cognitive test scores and presence of proteins such as Amyloid beta.
+
+%The EBM can calculate the most common progression of the events in the patient cohort and can be used to classify individual patients into the three main groups: cognitively normal, mild cognitive impairment and Alzheimer's disease. The EBM can also be used for longitudinal studies; for instance, it can stage patients after a predefined follow-up period.
 
 \section*{Project Background}
 % clinical challenges, PCA, why is the modelling challenging, other types of models.
 
-Dementia and other related neurodegenerative disorders cost the UK approximatelly \pounds 26 billion a year. Developing a clear understanding of how thse disorders operate and progress over time could help us find more effective treatment. This project is investigating the progression of Posterior Cortical Atrophy (PCA), which is an early onset variant of Alzheimer's disease that  causes atropy of the posterior part of the cerebral cortex, resulting in disruption of the visual system. 
+Dementia and other related neurodegenerative disorders cost the UK approximatelly \pounds 26 billion a year. Developing a clear understanding of how these disorders operate and progress over time could help us find more effective treatment. This project is investigating the progression of Posterior Cortical Atrophy (PCA), which is an early onset variant of Alzheimer's disease that causes atropy of the posterior part of the cerebral cortex, resulting in disruption of the visual and motor systems. 
+
+Symptoms include blurred vision, impaired ability to read, difficulty with depth perception and navigating through space. The cause of PCA is still unknown and there are no fully accepted diagnostic criteria. PCA patients are often misdiagnosed with anxiety disorder or depression. Moreover, no specific and accepted scientific treatment for PCA has been found so far due to the rarity and variation of the disease.  All these factors together show that more research into PCA is needed and the EBM can assist to this. It could lead to better understanding of PCA progression, and can be used as a clinical tool for prognoses and differential diagnosis. 
 
 \section*{Motivation}
 
-The EBM has already been used to study familiar and sporadic Alzheimer's disease and Huntington's disease, and this project aims to apply these techniques in the study of PCA. We will be interested to find the most common event progression, use it to classify patients into several groups according to their disease stage. We will also do some longitudinal studies, such as finding the probability of a patient converting from cognitively normal to mild cognitive impairment or from mild cognitive impairment to PCA over time. If time permits, we can also investigate possible extensions of the EBM, such as allowing for multiple progression sequences (Alex, IPMI).
+The EBM has already been used to study familiar and sporadic Alzheimer's disease and Huntington's disease (HM Fonteijn et al, 2012, Young et al 2014).This project aims to apply these techniques in the study of PCA. We will be interested to find the most common event progression, use it to classify patients into several groups according to their disease stage. We will also do some longitudinal studies, such as finding the probability of a patient converting from cognitively normal to mild cognitive impairment or from mild cognitive impairment to PCA over time. The EBM would be very useful as a clinical tool because it can provide prognostic information regarding the progression of PCA. It could also be used to perform differential diagnosis, which is the aim of the project.
 
 
 \section*{List of tasks \hfill Deadline}
@@ -177,27 +183,40 @@ The EBM has already been used to study familiar and sporadic Alzheimer's disease
 \renewcommand\arraystretch{4.4} %\setlength\minrowclearance{2.4pt}
 \newcommand\taskHeader[1]{\Large{\textbf{#1}}}
 
-\subsection*{\noindent Data collection and processing \hfill 7 April}
+\subsection*{\noindent Data collection and preprocessing \hfill 7 April}
 
-\subsection*{\noindent Read literature and implement the EBM \hfill 23 April}
+One needs to run segmentation algorithms to compute atrophy rates from MRI images of PCA patients. Data also needs to be collected and processed for other types of biomarker measurements, such as cognitive test scores and blood tests.
 
-\subsection*{\noindent Initial results: \hfill  30 April} 
+\subsection*{\noindent Read literature and implement the EBM \hfill 26 April}
+
+One needs to read about the EBM and design the PCA-based EBM. The choice of distributions modelling the subject measurements might be different from previous EBM implementations.
+
+\subsection*{\noindent Simoultaneous MCMC sampling \hfill 1 May}
+
+Implement MCMC sampling of both the model parameters and the most probable disease progression. This feature has not been tried in previous EBM implementations.
+
+\subsection*{\noindent Initial results: \hfill  11 May} 
 % Positional variance matrices and EBM stage histograms  for different groups  
+Use the EBM implementation to get some initial results for PCA: positional variance matrices and stage histograms for different groups.
 
-\subsection*{\noindent Analyse follow-up data\hfill  7 May}
+\subsection*{\noindent Analyse follow-up data\hfill  20 May}
 % , compute prob of remaining CN, MCI over time  
+Analyse follow-up data and compute plots showing longitudinal consistency of patient disease stage. Also fit Cox proportional hazards models to find the probability of patinents of converting from cognitively normal (CN) to mild cognitive impairment (MCI) or from MCI to PCA over time.
 
-\subsection*{\noindent Build disease stage classifier\hfill  14 May}
+\subsection*{\noindent Build disease stage classifier\hfill  30 May}
 % cut points, sensitivity and specificity  
-
-\subsection*{\noindent Simoultaneous MCMC sampling \hfill 27 May}
+Build a simple classifier using cut points in the histogram data which would be able to classify patients in the three main categories: CN, MCI and PCA.
 
 \subsection*{\noindent Differential Diagnosis of PCA vs other AD subtypes \hfill 8 July}
+Use the EBM to perform differential diagnosis of PCA and other Alzheimer's subtypes. 
 
 \subsection*{\noindent Validation of the results\hfill  20 July}
-% , comparison with other methods  
+Compare the results of the PCA-based EBM with other disease progression methods, such as those based on differential equations or self-modelling regression approaches.
 
 \subsection*{\noindent Write the Mres project report  \hfill  14 August}
+
+Write the MRes project report showing all the results obtained so far.
+
 
 % Temporal diagram hilighting the order in which areas of brain get affected by PCA
 % (maybe, if relevant) Comparison of event sequences across left-right hemispheres?  \hfill  
