@@ -1,4 +1,4 @@
-function samples = MCMC_sampling(X, mu_mix, sigma_mix, init_seq)
+function [samples,acceptance_rate] = MCMC_sampling(X, mu_mix, sigma_mix, init_seq)
 
 [nr_subjects,nr_biomk] = size(X);
 
@@ -11,9 +11,15 @@ assert(nr_biomk == nr_biomk2 && nr_biomk == nr_biomk3);
 % initialise curr_seq to initial sequence
 curr_seq = init_seq;
 
-burnout_iterations = 10^5;
-%burnout_iterations = 100;
-actual_iterations = 10^6;
+debug = 1;
+
+if(debug == 0)
+  burnout_iterations = 10^5;
+  actual_iterations = 10^6;
+else
+  burnout_iterations = 500;
+  actual_iterations = 100;
+end
 
 old_likelihood = calc_likelihood(X, curr_seq, mu_mix, sigma_mix);
 
@@ -21,6 +27,8 @@ s = RandStream('mcg16807','Seed',0);
 RandStream.setGlobalStream(s);
 
 samples = zeros(actual_iterations, nr_biomk);
+
+acceptance_rate = 0;
 
 for i=1:(burnout_iterations + actual_iterations)
     i
@@ -39,11 +47,11 @@ for i=1:(burnout_iterations + actual_iterations)
     new_likelihood = calc_likelihood(X, new_seq, mu_mix, sigma_mix);
     likely_ratio = new_likelihood / old_likelihood;
     
-   
     if(rand < likely_ratio)
         % swapt them with probability min(likely_ratio, 1)
         curr_seq = new_seq;
         old_likelihood = new_likelihood;
+        acceptance_rate = acceptance_rate + 1;
     end
     
     % if burnout is over record the samples
@@ -56,6 +64,8 @@ for i=1:(burnout_iterations + actual_iterations)
     end
     
 end
+
+acceptance_rate = acceptance_rate/(burnout_iterations + actual_iterations);
 
 
 end
