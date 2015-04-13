@@ -1,7 +1,7 @@
 function [] = sporadic_ebm()
 
 % ADNIdataBL raw data as received from the ADNI website
-%EBMdataBL - pre-processed data for use in the EBM model
+% EBMdataBL - pre-processed data for use in the EBM model
 % EMBLdxBL - the level of impairment for each patient (1 - Cognitively normal, 2 - MCI 3 - AD)
 % EBMevents - labels of the EBM events
 load('alex_data/ADNIdata_Baseline.mat')
