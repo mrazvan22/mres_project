@@ -43,7 +43,6 @@ for patient=1:J
    sum = 0;
    % for each disease stage
    for stage=0:I
-        
         sum = sum + prod(pXgE(1:stage,patient)) * prod(pXgnE(stage+1:I,patient));
    end
    if(sum == 0)
@@ -51,7 +50,6 @@ for patient=1:J
    end
    
    logL = logL  + log(sum * pK);
-   
 end
 
 

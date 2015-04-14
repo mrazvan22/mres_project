@@ -13,9 +13,9 @@ load('sporadic_params.mat')
 %save('grad_asc.mat', 'max_seq_grad','max_lik_grad','final_sequences_grad','final_lik_grad');
 
 load('grad_asc.mat');
-[samples, acceptance_rate] = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, max_seq_grad);
-%save('MCMC.mat','samples','acceptance_rate');
-[~, max_lik_event_positions] = sort(max_seq_grad) % compare these to Alex's results, not the max_seq_grad which is the permutation
+%[samples, acceptance_rate] = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, max_seq_grad);
+%save('MCMC2.mat','samples','acceptance_rate');
+%[~, max_lik_event_positions] = sort(max_seq_grad) % compare these to Alex's results, not the max_seq_grad which is the permutation
 
 load('MCMC.mat');
 [char_sequence,char_perm,all_pop_matrix] = calc_variance_diagrams(samples);

@@ -11,7 +11,7 @@ assert(nr_biomk == nr_biomk2 && nr_biomk == nr_biomk3);
 % initialise curr_seq to initial sequence
 curr_seq = init_seq;
 
-debug = 1;
+debug = 0;
 
 if(debug == 0)
   burnout_iterations = 10^5;
@@ -45,9 +45,9 @@ for i=1:(burnout_iterations + actual_iterations)
     new_seq(p2) = tmp;
     
     new_likelihood = calc_likelihood(X, new_seq, mu_mix, sigma_mix);
-    likely_ratio = new_likelihood / old_likelihood;
+    likely_ratio = new_likelihood - old_likelihood; % subtract because it's log likelihood
     
-    if(rand < likely_ratio)
+    if(log(rand) < likely_ratio) % take log of rand because the likelihood was in logspace
         % swapt them with probability min(likely_ratio, 1)
         curr_seq = new_seq;
         old_likelihood = new_likelihood;
