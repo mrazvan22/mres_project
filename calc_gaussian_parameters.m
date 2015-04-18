@@ -61,8 +61,6 @@ for biomk=1:nr_biomarkers
    end
    
 end
-
-   save('sporadic_params.mat', 'mu_mix', 'sigma_mix', 'pi_mix'); 
    
 
 end

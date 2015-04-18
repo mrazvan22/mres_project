@@ -17,7 +17,7 @@ if(debug == 0)
   burnout_iterations = 10^5;
   actual_iterations = 10^6;
 else
-  burnout_iterations = 500;
+  burnout_iterations = 1000;
   actual_iterations = 100;
 end
 
