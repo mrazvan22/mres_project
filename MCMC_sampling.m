@@ -1,4 +1,4 @@
-function [samples,acceptance_rate] = MCMC_sampling(X, mu_mix, sigma_mix, init_seq)
+function [samples,acceptance_rate] = MCMC_sampling(X, mu_mix, sigma_mix, pi_mix, init_seq)
 
 [nr_subjects,nr_biomk] = size(X);
 
@@ -21,7 +21,7 @@ else
   actual_iterations = 100;
 end
 
-old_likelihood = calc_likelihood(X, curr_seq, mu_mix, sigma_mix);
+old_likelihood = calc_likelihood(X, curr_seq, mu_mix, sigma_mix, pi_mix);
 
 s = RandStream('mcg16807','Seed',0);
 RandStream.setGlobalStream(s);
@@ -44,7 +44,7 @@ for i=1:(burnout_iterations + actual_iterations)
     new_seq(p1) = new_seq(p2);
     new_seq(p2) = tmp;
     
-    new_likelihood = calc_likelihood(X, new_seq, mu_mix, sigma_mix);
+    new_likelihood = calc_likelihood(X, new_seq, mu_mix, sigma_mix, pi_mix);
     likely_ratio = new_likelihood - old_likelihood; % subtract because it's log likelihood
     
     if(log(rand) < likely_ratio) % take log of rand because the likelihood was in logspace

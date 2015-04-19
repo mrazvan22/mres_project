@@ -1,4 +1,4 @@
-function logL = calc_likelihood(X, S, mu_mix, sigma_mix)
+function logL = calc_likelihood(X, S, mu_mix, sigma_mix, pi_mix)
 
 % modelled from equation (1), alex paper page 2567
 % J - # patients
@@ -16,6 +16,7 @@ logL = 1;
 %reorder the gaussian parameters according to the S ordering provided
 mu_mix = mu_mix(S,:);
 sigma_mix = sigma_mix(S,:);
+pi_mix = pi_mix(S,:);
 
 %also reorder the dataset
 X = X(:,S);
@@ -29,6 +30,8 @@ pXgnE = zeros(I, J);
 % mu_mix(:,1) - controls
 % mu_mix(:,2) - patients
 for biomk=1:I
+%     pXgE(biomk,:) = pi_mix(biomk,2) * normpdf(X(:,biomk), mu_mix(biomk,2), sigma_mix(biomk,2));
+%     pXgnE(biomk,:) = pi_mix(biomk,1) * normpdf(X(:,biomk), mu_mix(biomk,1), sigma_mix(biomk,1));
     pXgE(biomk,:) = normpdf(X(:,biomk), mu_mix(biomk,2), sigma_mix(biomk,2));
     pXgnE(biomk,:) = normpdf(X(:,biomk), mu_mix(biomk,1), sigma_mix(biomk,1));
     if(~all(pXgE(biomk,:)))
