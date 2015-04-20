@@ -31,7 +31,6 @@ samples = zeros(actual_iterations, nr_biomk);
 acceptance_rate = 0;
 
 for i=1:(burnout_iterations + actual_iterations)
-    i
     p1 = ceil(rand * 14);
     p2 = ceil(rand * 14);
     while (p1 == p2)
@@ -60,7 +59,7 @@ for i=1:(burnout_iterations + actual_iterations)
     end
     
     if(mod(i,1000) == 0)
-       display('1000 iterations') 
+       i 
     end
     
 end

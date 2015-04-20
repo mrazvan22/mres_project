@@ -1,10 +1,6 @@
-function [char_sequence,all_pop_matrix] = calc_variance_diagrams(samples,max_seq_grad)
-    
-biomk_avg_ordering = mean(samples);
-[~, char_sequence] = sort(biomk_avg_ordering); % for comparing with Alex's seq of events in the matrix
-char_sequence
+function [all_pop_matrix] = calc_variance_diagrams(samples,max_seq_grad)
 
-NR_BIOMK = length(biomk_avg_ordering);
+NR_BIOMK = size(max_seq_grad,2);
 all_pop_matrix = zeros(NR_BIOMK, NR_BIOMK); % all_pop_matrix(event, position);
 
 for s=1:size(samples,1)
