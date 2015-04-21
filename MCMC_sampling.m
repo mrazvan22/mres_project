@@ -31,11 +31,15 @@ samples = zeros(actual_iterations, nr_biomk);
 acceptance_rate = 0;
 
 for i=1:(burnout_iterations + actual_iterations)
-    p1 = ceil(rand * 14);
-    p2 = ceil(rand * 14);
-    while (p1 == p2)
-        p2 = ceil(rand * 14);
-    end
+    % always perturb two adjacent events, otherwise the acceptance rate is
+    % really low. randomly select one out of the first 13 biomarkers and
+    % then swap it with the next biomk
+    p1 = ceil(rand * 13);
+    %p2 = ceil(rand * 14);
+    p2 = p1+1;
+%     while (p1 == p2)
+%         p2 = ceil(rand * 14);
+%     end
     new_seq = curr_seq;
     
     % swap the 2 events 

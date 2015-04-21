@@ -16,10 +16,10 @@ load('alex_grad_asc.mat');
 % max likelihood labels
 EBMevents(max_seq_grad)
 
-%[samples, acceptance_rate] = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, pi_mix, max_seq_grad);
-%save('alex_MCMC.mat','samples','acceptance_rate');
+[samples, acceptance_rate] = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, pi_mix, max_seq_grad);
+save('alex_MCMC2_adj.mat','samples','acceptance_rate');
 
-load('alex_MCMC.mat');
+load('alex_MCMC_adj.mat');
 [all_pop_matrix] = calc_variance_diagrams(samples,max_seq_grad);
 
 %norm_mat = normaliseVarMatrix(all_pop_matrix);
