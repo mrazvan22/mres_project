@@ -16,16 +16,15 @@ load('alex_grad_asc.mat');
 % max likelihood labels
 EBMevents(max_seq_grad)
 
-[samples, acceptance_rate] = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, pi_mix, max_seq_grad);
-save('alex_MCMC2_adj.mat','samples','acceptance_rate');
+%[samples, acceptance_rate] = MCMC_sampling(EBMdataBL, mu_mix, sigma_mix, pi_mix, max_seq_grad);
+%save('alex_MCMC2_adj.mat','samples','acceptance_rate');
 
-load('alex_MCMC_adj.mat');
+load('alex_MCMC.mat');
 [all_pop_matrix] = calc_variance_diagrams(samples,max_seq_grad);
 
 %norm_mat = normaliseVarMatrix(all_pop_matrix);
 h = plotVarMatrix(all_pop_matrix, max_seq_grad);
-%hgexport(h, 'figures/alex_mat_max_like.eps')
-saveas(h, 'figures/alex_mat_max_like', 'png')
+%saveas(h, 'figures/alex_mat_max_like', 'png')
 
 %           [1,2,3,4,5,6,7 ,8,9,10,11,12,13,14]
 %matrixSeqPerm = [1,2,3,5,7,4,11,6,8,9, 12,13,14,10]
@@ -36,8 +35,7 @@ char_seq = calc_char_sequence(samples);
 %norm_mat_char_seq = normaliseVarMatrix(matrix_char_seq);
 
 h = plotVarMatrix(matrix_char_seq, char_seq);
-%hgexport(h, 'figures/alex_mat_char_seq.eps')
-saveas(h, 'figures/alex_mat_char_seq', 'png')
+%saveas(h, 'figures/alex_mat_char_seq', 'png')
 
 calc_likelihood(EBMdataBL, max_seq_grad, mu_mix, sigma_mix, pi_mix)
 calc_likelihood(EBMdataBL, char_seq, mu_mix, sigma_mix, pi_mix)

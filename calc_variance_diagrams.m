@@ -4,8 +4,9 @@ NR_BIOMK = size(max_seq_grad,2);
 all_pop_matrix = zeros(NR_BIOMK, NR_BIOMK); % all_pop_matrix(event, position);
 
 for s=1:size(samples,1)
-  for biomk = 1:NR_BIOMK
-    all_pop_matrix(biomk, samples(s,biomk)) = all_pop_matrix(biomk, samples(s,biomk)) + 1;
+  for pos = 1:NR_BIOMK
+    biomk = samples(s,pos);
+    all_pop_matrix(biomk, pos) = all_pop_matrix(biomk, pos) + 1;
   end
 end
 
