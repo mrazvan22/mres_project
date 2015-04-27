@@ -6,7 +6,8 @@ function [] = sporadic_ebm()
 % EBMevents - labels of the EBM events
 load('alex_data/ADNIdata_Baseline.mat')
 
-[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL, @em_mix)
+%[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL, @em_mix)
+[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL, @fmincon_fit)
 save('sporadic_params.mat', 'mu_mix', 'sigma_mix', 'pi_mix'); 
 
 load('sporadic_params.mat');

@@ -4,6 +4,8 @@ function [mu, sigma, pi]  = ...
 % data is a 1d array of biomarker levels which is assumed to be generated
 % from a mixture of 2 gaussian distributions
 
+%mu_init(2) = 28.359
+
 mu = mu_init;
 sigma = sigma_init;
 %pi = pi_init;
@@ -13,6 +15,7 @@ min_sigma = max_sigma / 5;
 % pi_control is the weight of the control gaussian
 % pi(1) - control pi(2) - patient
 pi = [0.5 0.5];
+
 
 if (mu_init(1) < mu_init(2))
   min_mu = [0 mu_init(2)];
@@ -107,7 +110,7 @@ for iter=1:iterations
     
     %log_likely = singleBiomkLikelihood(data, mu, sigma, pi);  
 
-    
+    [mu, sigma, pi(1)]
     if(~all(sigma) || isnan(sigma(1)) || isnan(sigma(2)))
         break
     end

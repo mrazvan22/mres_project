@@ -4,6 +4,8 @@ function [mu, sigma, pi]  = ...
 % data is a 1d array of biomarker levels which is assumed to be generated
 % from a mixture of 2 gaussian distributions
 
+%mu_init(2) = 27
+
 max_sigma = sigma_init;
 %min_sigma = max_sigma / 5;
 min_sigma = max_sigma/5;

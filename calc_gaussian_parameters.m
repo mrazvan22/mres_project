@@ -10,9 +10,11 @@ mu_mix = zeros(nr_biomarkers, 2);
 sigma_mix = zeros(nr_biomarkers, 2);
 pi_mix = zeros(nr_biomarkers, 2);
 
+indices = [10]
+%indices = 1:nr_biomarkers
 k = 10;
 
-for biomk=1:nr_biomarkers
+for biomk=indices
    control_levels = EBMdataBL(control_indices, biomk);
    patient_levels = EBMdataBL(patient_indices, biomk);
     
@@ -61,11 +63,9 @@ for biomk=1:nr_biomarkers
 
    %hist(control_levels,50)
    
-   if(biomk == k)
-        mu_mix(k,:)
-        sigma_mix(k,:)
-        pi_mix(k,:)
-   end
+%    if(biomk == k)
+    [mu_mix(k,:), sigma_mix(k,:), pi_mix(k,1)]
+%    end
    
 end
    
