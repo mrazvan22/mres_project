@@ -1,4 +1,4 @@
-function [mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL)
+function [mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL, fitting_func)
 
 
 [nr_patients, nr_biomarkers] = size(EBMdataBL);
@@ -10,15 +10,19 @@ mu_mix = zeros(nr_biomarkers, 2);
 sigma_mix = zeros(nr_biomarkers, 2);
 pi_mix = zeros(nr_biomarkers, 2);
 
+k = 10;
+
 for biomk=1:nr_biomarkers
    control_levels = EBMdataBL(control_indices, biomk);
    patient_levels = EBMdataBL(patient_indices, biomk);
     
    mu_control = mean(control_levels);
    sigma_control = std(control_levels);
+   pi_control = length(control_levels)/nr_patients;
    
    mu_patient = mean(patient_levels);
    sigma_patient = std(patient_levels);
+   pi_patient = length(patient_levels)/nr_patients;
    
    %pXgEnE(:, biomk, 2) = normpdf(control_levels, mu_control, sigma_control);
    %pXgEnE(:, biomk, 1) = normpdf(patient_levels, mu_patient, sigma_patient);
@@ -28,7 +32,8 @@ for biomk=1:nr_biomarkers
    % fit two gaussians on all the data
 
    [mu_mix(biomk,:), sigma_mix(biomk,:), pi_mix(biomk,:)]  = ...
-       em_mix(all_levels, [mu_control, mu_patient], [sigma_control, sigma_patient])
+       fitting_func(all_levels, [mu_control, mu_patient], ...
+       [sigma_control, sigma_patient], [pi_control, pi_patient]);
    
 
    minX = min(all_levels);
@@ -56,8 +61,10 @@ for biomk=1:nr_biomarkers
 
    %hist(control_levels,50)
    
-   if(biomk == 14)
-        display('asfda')
+   if(biomk == k)
+        mu_mix(k,:)
+        sigma_mix(k,:)
+        pi_mix(k,:)
    end
    
 end

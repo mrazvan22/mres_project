@@ -1,16 +1,26 @@
 function [mu, sigma, pi]  = ...
-    em_mix(data, mu_init, max_sigma)
+    em_mix(data, mu_init, sigma_init, pi_init)
 
 % data is a 1d array of biomarker levels which is assumed to be generated
 % from a mixture of 2 gaussian distributions
 
 mu = mu_init;
-sigma = max_sigma;
+sigma = sigma_init;
+%pi = pi_init;
+max_sigma = sigma_init;
 min_sigma = max_sigma / 5;
 
 % pi_control is the weight of the control gaussian
 % pi(1) - control pi(2) - patient
 pi = [0.5 0.5];
+
+if (mu_init(1) < mu_init(2))
+  min_mu = [0 mu_init(2)];
+  max_mu = [mu_init(1) inf];
+else
+  min_mu = [mu_init(1) 0];
+  max_mu = [inf mu_init(2)];
+end
 
 N = length(data); 
 K = 2;
@@ -55,6 +65,16 @@ for iter=1:iterations
     for k=1:K 
        mu(k) =  sum(znk(:,k) .* data) /Nk(k);
        
+       if (mu(k) > max_mu(k))
+         display('max mu constraint')
+         mu(k) = max_mu(k);
+       end
+       
+       if (mu(k) < min_mu(k))
+         display('min mu constraint')
+         mu(k) = min_mu(k);
+       end
+       
        % take sqrt because we need std dev, not variance
        sigma(k) = sqrt(sum(znk(:,k) .* (data - mu(k)) .* (data - mu(k)) ) / Nk(k)); 
        
@@ -85,15 +105,8 @@ for iter=1:iterations
 
     end
     
-           
-    % Evaluate the log_likelihood
-    for j=1:K
-       eval_matrix(:,j) = pi(j) * normpdf(data, mu(j), sigma(j));
-    end
+    %log_likely = singleBiomkLikelihood(data, mu, sigma, pi);  
 
-    sumK = sum(eval_matrix, 2);
-    assert(length(sumK) == N);
-    log_likely = sum(log(sumK));
     
     if(~all(sigma) || isnan(sigma(1)) || isnan(sigma(2)))
         break

@@ -6,10 +6,10 @@ function [] = alexparams_ebm()
 % EBMevents - labels of the EBM events
 load('alex_data/ADNIdata_Baseline.mat')
 
-%[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL)
+%[mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdxBL, @em_mix)
 
 load('alex_params.mat')
-%[max_seq_grad,max_lik_grad,final_sequences_grad,final_lik_grad] = char_seq_grad_asc(EBMdataBL, mu_mix, sigma_mix, pi_mix);
+[max_seq_grad,max_lik_grad,final_sequences_grad,final_lik_grad] = char_seq_grad_asc(EBMdataBL, mu_mix, sigma_mix, pi_mix);
 %save('alex_grad_asc.mat', 'max_seq_grad','max_lik_grad','final_sequences_grad','final_lik_grad');
 
 load('alex_grad_asc.mat');

@@ -24,11 +24,12 @@ for r=1:ROUNDS
   curr_seq = randperm(NR_BIOMK);
   old_likelihood = calc_likelihood(X, curr_seq, mu_mix, sigma_mix, pi_mix);
   for i=1:NR_ITERATIONS
-      p1 = ceil(rand * NR_BIOMK);
-      p2 = ceil(rand * NR_BIOMK);
-      while (p1 == p2)
-          p2 = ceil(rand * NR_BIOMK);
-      end
+      p1 = ceil(rand * (NR_BIOMK - 1));
+      p2 = p1+1;
+      %p2 = ceil(rand * NR_BIOMK);
+      %while (p1 == p2)
+      %    p2 = ceil(rand * NR_BIOMK);
+      %end
       new_seq = curr_seq;
 
       % swap events
