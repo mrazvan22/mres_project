@@ -4,14 +4,14 @@ function [mu_mix, sigma_mix, pi_mix] = calc_gaussian_parameters(EBMdataBL, EBMdx
 [nr_patients, nr_biomarkers] = size(EBMdataBL);
 
 control_indices = find(EBMdxBL == 1);
-patient_indices = find(EBMdxBL > 1);
+patient_indices = find(EBMdxBL == 3);
 
 mu_mix = zeros(nr_biomarkers, 2);
 sigma_mix = zeros(nr_biomarkers, 2);
 pi_mix = zeros(nr_biomarkers, 2);
 
-indices = [10]
-%indices = 1:nr_biomarkers
+%indices = [10]
+indices = 1:nr_biomarkers
 k = 10;
 
 for biomk=indices
@@ -59,7 +59,7 @@ for biomk=indices
    %hist(control_levels);
    hold on
 
-   plot(X, Y,'y');
+   plot(X, Y,'k','LineWidth',2);
 
    %hist(control_levels,50)
    

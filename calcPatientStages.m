@@ -1,4 +1,4 @@
-function logL = calc_likelihood(X, S, mu_mix, sigma_mix, pi_mix)
+function stages = calcPatientStages(X, S, mu_mix, sigma_mix, pi_mix)
 
 % modelled from equation (1), alex paper page 2567
 % J - # patients
@@ -10,8 +10,6 @@ function logL = calc_likelihood(X, S, mu_mix, sigma_mix, pi_mix)
 [I3,~] = size(sigma_mix);
 
 assert(I == I2 && I == I3);
-
-logL = 0;
 
 %reorder the gaussian parameters according to the S ordering provided
 mu_mix = mu_mix(S,:);
@@ -41,20 +39,15 @@ end
 
 pK = 1/J; % uniform prior that patient i is at stage k.
 
-% for each patient
-for patient=1:J
-   sum = 0;
-   % for each disease stage
-   for stage=0:I
-        sum = sum + prod(pXgE(1:stage,patient)) * prod(pXgnE(stage+1:I,patient));
-   end
-   if(sum == 0)
-      display('Warning log-likelihood is -inf') 
-   end
-   
-   logL = logL  + log(sum * pK);
+
+prod_pXgE = zeros(I+1,J);
+% for each disease stage
+for stage=0:I
+    prod_pXgE(stage+1,:) = prod(pXgE(1:stage,:),1) .* prod(pXgnE(stage+1:I,:),1);
 end
 
+[~, stages] = max(prod_pXgE);
 
+stages = stages - 1;
 
 end

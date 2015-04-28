@@ -1,4 +1,4 @@
-function [max_seq,max_lik,final_sequences,final_lik] = char_seq_grad_asc(X, mu_mix, sigma_mix, pi_mix)
+function [max_seq,max_lik,final_sequences,final_lik] = char_seq_grad_asc(X, mu_mix, sigma_mix, pi_mix, randShuffle)
 
 [NR_SUBJECTS,NR_BIOMK] = size(X);
 
@@ -22,14 +22,22 @@ last_changed = zeros(ROUNDS,1);
 for r=1:ROUNDS
   r
   curr_seq = randperm(NR_BIOMK);
-  old_likelihood = calc_likelihood(X, curr_seq, mu_mix, sigma_mix, pi_mix);
+  old_likelihood = calcLikelihoodFast(X, curr_seq, mu_mix, sigma_mix, pi_mix);
+  
   for i=1:NR_ITERATIONS
-      p1 = ceil(rand * (NR_BIOMK - 1));
-      p2 = p1+1;
-      %p2 = ceil(rand * NR_BIOMK);
-      %while (p1 == p2)
-      %    p2 = ceil(rand * NR_BIOMK);
-      %end
+
+      if (randShuffle == 0)
+        % only swap adjacent events
+        p1 = ceil(rand * (NR_BIOMK - 1));
+        p2 = p1+1;
+      else
+        % swap events randomly
+        p1 = ceil(rand * NR_BIOMK);
+        p2 = ceil(rand * NR_BIOMK);
+        while (p1 == p2)
+           p2 = ceil(rand * NR_BIOMK);
+        end
+      end
       new_seq = curr_seq;
 
       % swap events
@@ -37,7 +45,7 @@ for r=1:ROUNDS
       new_seq(p1) = new_seq(p2);
       new_seq(p2) = tmp;
 
-      new_likelihood = calc_likelihood(X, new_seq, mu_mix, sigma_mix, pi_mix);
+      new_likelihood = calcLikelihoodFast(X, new_seq, mu_mix, sigma_mix, pi_mix);
       if(new_likelihood >= old_likelihood)
           curr_seq = new_seq;
           old_likelihood = new_likelihood;

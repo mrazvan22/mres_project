@@ -1,4 +1,4 @@
-function [samples,acceptance_rate] = MCMC_sampling(X, mu_mix, sigma_mix, pi_mix, init_seq)
+function [samples,acceptance_rate] = MCMC_sampling(X, mu_mix, sigma_mix, pi_mix, init_seq, randShuffle)
 
 [nr_subjects,nr_biomk] = size(X);
 
@@ -11,17 +11,17 @@ assert(nr_biomk == nr_biomk2 && nr_biomk == nr_biomk3);
 % initialise curr_seq to initial sequence
 curr_seq = init_seq;
 
-debug = 0;
+debug = 1;
 
 if(debug == 0)
   burnout_iterations = 10^5;
   actual_iterations = 10^6;
 else
-  burnout_iterations = 1000;
-  actual_iterations = 100;
+  burnout_iterations = 10^4;
+  actual_iterations = 10^5;
 end
 
-old_likelihood = calc_likelihood(X, curr_seq, mu_mix, sigma_mix, pi_mix);
+old_likelihood = calcLikelihoodFast(X, curr_seq, mu_mix, sigma_mix, pi_mix);
 
 s = RandStream('mcg16807','Seed',0);
 RandStream.setGlobalStream(s);
@@ -31,15 +31,16 @@ samples = zeros(actual_iterations, nr_biomk);
 acceptance_rate = 0;
 
 for i=1:(burnout_iterations + actual_iterations)
-    % always perturb two adjacent events, otherwise the acceptance rate is
-    % really low. randomly select one out of the first 13 biomarkers and
-    % then swap it with the next biomk
-    p1 = ceil(rand * 13);
-    %p2 = ceil(rand * 14);
-    p2 = p1+1;
-%     while (p1 == p2)
-%         p2 = ceil(rand * 14);
-%     end
+    if (randShuffle == 0)
+      p1 = ceil(rand * (nr_biomk - 1));
+      p2 = p1+1;
+    else
+      p1 = ceil(rand * nr_biomk);
+      p2 = ceil(rand * nr_biomk);
+      while (p1 == p2)
+          p2 = ceil(rand * nr_biomk);
+      end
+    end
     new_seq = curr_seq;
     
     % swap the 2 events 
@@ -47,7 +48,7 @@ for i=1:(burnout_iterations + actual_iterations)
     new_seq(p1) = new_seq(p2);
     new_seq(p2) = tmp;
     
-    new_likelihood = calc_likelihood(X, new_seq, mu_mix, sigma_mix, pi_mix);
+    new_likelihood = calcLikelihoodFast(X, new_seq, mu_mix, sigma_mix, pi_mix);
     likely_ratio = new_likelihood - old_likelihood; % subtract because it's log likelihood
     
     if(log(rand) < likely_ratio) % take log of rand because the likelihood was in logspace

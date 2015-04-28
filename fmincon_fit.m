@@ -8,7 +8,7 @@ function [mu, sigma, pi]  = ...
 
 max_sigma = sigma_init;
 %min_sigma = max_sigma / 5;
-min_sigma = max_sigma/5;
+min_sigma = max_sigma/100;
 
 if (mu_init(1) < mu_init(2))
   min_mu = [0 mu_init(2)];
@@ -30,8 +30,8 @@ assert(length(mu_init) == K && length(sigma_init) == K && length(pi_init) == K);
 lb = [min_mu(1), min_mu(2), min_sigma(1), min_sigma(2), 0];
 ub = [max_mu(1), max_mu(2), max_sigma(1), max_sigma(2), 1]; 
 
-fminconOptions = optimset('MaxFunEvals', 20000, 'Algorithm', 'interior-point',...
-    'TolX', 1e-10, 'TolFun', 1e-10, 'Display', 'iter');
+fminconOptions = optimset('MaxFunEvals', 200000, 'Algorithm', 'sqp',...
+    'TolX', 1e-15, 'TolFun', 1e-15, 'Display', 'iter');
 
 startX = [mu_init, sigma_init, pi_init(1)];
 x = fmincon(@singleBiomkLikelihood, startX, [],[],[],[],lb, ub, [], fminconOptions, data);

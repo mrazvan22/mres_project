@@ -36,7 +36,7 @@ eval_matrix = zeros(N,K);
 log_likely = inf;
 thresh = 0.0001;
 
-iterations = 300;
+iterations = 1000;
 
 Nk = [-1 -1];
 %% keep updating until convergence
@@ -69,12 +69,12 @@ for iter=1:iterations
        mu(k) =  sum(znk(:,k) .* data) /Nk(k);
        
        if (mu(k) > max_mu(k))
-         display('max mu constraint')
+         %display('max mu constraint')
          mu(k) = max_mu(k);
        end
        
        if (mu(k) < min_mu(k))
-         display('min mu constraint')
+         %display('min mu constraint')
          mu(k) = min_mu(k);
        end
        
@@ -85,13 +85,13 @@ for iter=1:iterations
        % of each distribution should not be greater than the sigma of the CN
        % and AD groups taken separately
        if (sigma(k) > max_sigma(k))
-           display('max sigma constraint')
+           %display('max sigma constraint')
            sigma(k) = max_sigma(k);
        end
       
        % also make sure the sigma doesn't fall below a certain threshold
        if (sigma(k) < min_sigma(k))
-           display('min sigma constraint')
+           %display('min sigma constraint')
            sigma(k) = min_sigma(k);
        end
        
@@ -101,16 +101,16 @@ for iter=1:iterations
        % normalised
        pi = pi ./ sum(pi);
 
-       X = min(data):0.005:max(data);
-       hist(data,25)
-       hold on
-       plot(X, eval_mix_gaussians(X, mu, sigma, pi))
+%        X = min(data):0.005:max(data);
+%        hist(data,25)
+%        hold on
+%        plot(X, eval_mix_gaussians(X, mu, sigma, pi))
 
     end
     
     %log_likely = singleBiomkLikelihood(data, mu, sigma, pi);  
 
-    [mu, sigma, pi(1)]
+    %[mu, sigma, pi(1)]
     if(~all(sigma) || isnan(sigma(1)) || isnan(sigma(2)))
         break
     end
