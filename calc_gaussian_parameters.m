@@ -11,8 +11,10 @@ sigma_mix = zeros(nr_biomarkers, 2);
 pi_mix = zeros(nr_biomarkers, 2);
 
 %indices = [10]
-indices = 1:nr_biomarkers
+indices = 1:nr_biomarkers;
 k = 10;
+
+global DEBUG
 
 for biomk=indices
    control_levels = EBMdataBL(control_indices, biomk);
@@ -44,29 +46,29 @@ for biomk=indices
    Y = eval_mix_gaussians(X, mu_mix(biomk,:), sigma_mix(biomk,:), pi_mix(biomk,:));
    %Y = eval_mix_gaussians(X, [mu_control, mu_patient], [sigma_control, sigma_patient], pi_mix(biomk,:));
    
-   
-   clf;
-   [f1,x1] = hist(patient_levels);
-   bar(x1,f1, 'FaceColor',[0.8,0.2,0.2]);
-   %h = findobj(gca,'Type','patch');
-   %h.FaceColor = [0.8 0.2 0.2];
-   %h.EdgeColor = 'b';
-   hold on
-   [f2,x2] = hist(control_levels);
-   bar(x2,f2,'b');
-   maxY = get(gca,'ylim');
-   Y = Y * (maxY(2) * 0.66/max(Y));
-   %hist(control_levels);
-   hold on
+   if DEBUG
+     clf;
+     [f1,x1] = hist(patient_levels);
+     bar(x1,f1, 'FaceColor',[0.8,0.2,0.2]);
+     %h = findobj(gca,'Type','patch');
+     %h.FaceColor = [0.8 0.2 0.2];
+     %h.EdgeColor = 'b';
+     hold on
+     [f2,x2] = hist(control_levels);
+     bar(x2,f2,'b');
+     maxY = get(gca,'ylim');
+     Y = Y * (maxY(2) * 0.66/max(Y));
+     %hist(control_levels);
+     hold on
 
-   plot(X, Y,'k','LineWidth',2);
+     plot(X, Y,'k','LineWidth',2);
 
-   %hist(control_levels,50)
-   
-%    if(biomk == k)
-    [mu_mix(k,:), sigma_mix(k,:), pi_mix(k,1)]
-%    end
-   
+     %hist(control_levels,50)
+
+  %    if(biomk == k)
+      [mu_mix(biomk,:), sigma_mix(biomk,:), pi_mix(biomk,1)]
+  %    end
+   end
 end
    
 

@@ -30,8 +30,15 @@ assert(length(mu_init) == K && length(sigma_init) == K && length(pi_init) == K);
 lb = [min_mu(1), min_mu(2), min_sigma(1), min_sigma(2), 0];
 ub = [max_mu(1), max_mu(2), max_sigma(1), max_sigma(2), 1]; 
 
+global DEBUG
+if DEBUG == true
+  displayOpt = 'iter';
+else
+  displayOpt = 'off';
+end
+
 fminconOptions = optimset('MaxFunEvals', 200000, 'Algorithm', 'sqp',...
-    'TolX', 1e-15, 'TolFun', 1e-15, 'Display', 'iter');
+    'TolX', 1e-15, 'TolFun', 1e-15, 'Display', displayOpt);
 
 startX = [mu_init, sigma_init, pi_init(1)];
 x = fmincon(@singleBiomkLikelihood, startX, [],[],[],[],lb, ub, [], fminconOptions, data);
