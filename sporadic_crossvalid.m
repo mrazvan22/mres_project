@@ -19,6 +19,7 @@ DEBUG = false;
 
 %% find the Gaussian distribution parameters
 for b=1:BOOTSTRAPS
+  b
   sampleIndices = randsample(NR_SUBJECTS,NR_SUBJECTS,REPLACEMENT);
   bootData(b,:,:) = EBMdataBL(sampleIndices, :);
   bootDiag(b,:) = EBMdxBL(sampleIndices, :);
@@ -32,13 +33,16 @@ save('cross_params.mat', 'muBoot', 'sigmaBoot', 'piBoot', 'bootData', 'bootDiag'
 load('cross_params.mat');
 bootSeq = zeros(BOOTSTRAPS, NR_BIOMK);
 for b=1:BOOTSTRAPS
-  [bootSeq(b,:),max_lik_grad,final_sequences_grad,final_lik_grad] = char_seq_grad_asc(bootData(b,:,:), muBoot(b,:), sigmaBoot(b,:), piBoot(b,:), RAND_SHUFFLE);
+  b
+  [bootSeq(b,:),max_lik_grad,final_sequences_grad,final_lik_grad] = ...
+    char_seq_grad_asc(squeeze(bootData(b,:,:)), squeeze(muBoot(b,:,:)), ...
+    squeeze(sigmaBoot(b,:,:)), squeeze(piBoot(b,:,:)), RAND_SHUFFLE);
 end
 save('boot_samples.mat', 'bootSeq');
 
 %% Plot the positional variance matrix
 load('boot_samples.mat');
-noboot = load('grad_Asc.mat');
+noboot = load('grad_asc.mat');
 
 [boot_all_matrix] = calc_variance_diagrams(bootSeq,noboot.max_seq_grad); % bootstrap matrix for all subjects
 
