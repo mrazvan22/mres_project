@@ -17,17 +17,16 @@ tic
 toc
 %save('sporadic_params.mat', 'mu_mix', 'sigma_mix', 'pi_mix'); 
 
-load('sporadic_params.mat');
+load('../mres/code/params_adni.mat');
 a = load('alex_params.mat');
 sum(sum(abs(a.mu_mix - mu_mix)))
 sum(sum(abs(a.sigma_mix - sigma_mix)))
 sum(abs(a.sigma_mix - sigma_mix),2)
 
 randShuffle = 1;
-%[max_seq_grad,max_lik_grad,final_sequences_grad,final_lik_grad] = char_seq_grad_asc(EBMdataBL, mu_mix, sigma_mix, pi_mix, randShuffle);
+[max_seq_grad,max_lik_grad,final_sequences_grad,final_lik_grad] = char_seq_grad_asc(EBMdataBL, mu_mix, sigma_mix, pi_mix, randShuffle);
 %save('grad_asc.mat', 'max_seq_grad','max_lik_grad','final_sequences_grad','final_lik_grad');
 
-load('grad_asc.mat');
 a_grad = load('alex_grad_asc.mat')
 % max likelihood labels
 EBMevents(max_seq_grad)
